@@ -1,0 +1,1 @@
+//databasetei holbogdsnii daraa hiigdne

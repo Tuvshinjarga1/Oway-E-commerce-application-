@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1055700920383",
+    "project_id": "oway-cc924",
+    "storage_bucket": "oway-cc924.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055700920383:android:db8e86b7adf37a2ad9308a",
+        "android_client_info": {
+          "package_name": "com.example.oway"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeKQDpM26-BlTStCTFCZi8QHE9kJenIxA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

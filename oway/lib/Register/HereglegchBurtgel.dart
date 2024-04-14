@@ -128,7 +128,7 @@ class _BurtgelState extends State<Burtgel> {
                   fixedSize: MaterialStateProperty.all<Size>(Size.fromHeight(50)),
                 ),
                 onPressed: () {
-                  if (passwordController == confirmPasswordController){
+                  if (passwordController.text == confirmPasswordController.text){
                   final surname = lastNameController.text;
                   final name = firstNameController.text;
                   final phone = phoneController.text;

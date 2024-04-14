@@ -7,9 +7,28 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1055700920383:android:db8e86b7adf37a2ad9308a",
+        "mobilesdk_app_id": "1:1055700920383:android:8af5844376d06ee0d9308a",
         "android_client_info": {
           "package_name": "com.example.oway"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeKQDpM26-BlTStCTFCZi8QHE9kJenIxA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055700920383:android:44d722b51bbe2306d9308a",
+        "android_client_info": {
+          "package_name": "com.example.phone"
         }
       },
       "oauth_client": [],

@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:oway/Register/HereglegchBurtgel.dart";
 import "package:oway/home.dart";
 
 class Login extends StatefulWidget{
@@ -49,10 +50,24 @@ class _Login extends State<Login>{
                   prefixIcon: Icon(Icons.password),
                 ),
               ),
-              Align(
-              alignment: FractionalOffset(0.8, 0.8),
-              child: Text("Бүртгүүлэх",
-              style: TextStyle(fontSize: 18)),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Burtgel()));
+                },
+                style: ButtonStyle(
+                  alignment: Alignment.centerRight, // Adjust alignment as needed
+                  foregroundColor: MaterialStateProperty.all<Color>(Colors.blue), // Set text color
+                  textStyle: MaterialStateProperty.all<TextStyle>(TextStyle(fontSize: 18)), // Set text style
+                  overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                    (Set<MaterialState> states) {
+                      if (states.contains(MaterialState.hovered)) {
+                        return Colors.transparent; // Change the color when hovered
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                child: Text("Бүртгүүлэх"),
               ),
               SizedBox(height: 30,),
               ElevatedButton(

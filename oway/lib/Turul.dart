@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:oway/ErhlegchBurtgel.dart';
+import 'package:oway/Register/HereglegchBurtgel.dart';
 
 class Ouei extends StatelessWidget{
   @override

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:oway/Register/HereglegchBurtgel.dart';
 import 'package:oway/Profile.dart';
+import 'package:oway/login.dart';
 
 void main() {
   runApp(HomePage());
@@ -12,7 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-
+  bool _isLoggedIn = false;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -136,7 +138,15 @@ class _HomePageState extends State<HomePage> {
             setState(() {
               _selectedIndex = index;
               if(index == 2){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
+                if (_isLoggedIn) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                  );
+                }
+                  else{
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+                  }
               }
             });
           },

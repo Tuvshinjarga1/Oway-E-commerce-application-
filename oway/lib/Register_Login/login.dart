@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
-import 'package:oway/Register/HereglegchBurtgel.dart';
-import 'package:oway/home.dart';
+import 'package:flutter/material.dart';
+import 'package:oway/Register_Login/HereglegchBurtgel.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -14,22 +13,24 @@ class _LoginState extends State<Login> {
   TextEditingController _passwordController = TextEditingController();
 
   Future<void> _signInWithEmailAndPassword() async {
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _phoneNumberController.text, // Use email as phone number
-        password: _passwordController.text,
-      );
-      // User successfully logged in, navigate to home page
-      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-    } catch (e) {
-      // Handle login errors
-      print("Error signing in: $e");
-      // Show error message to user
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Failed to sign in. Please check your credentials."),
-      ));
-    }
+  try {
+    UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: _phoneNumberController.text + "@gmail.com", // Use email as phone number
+      password: _passwordController.text,
+    );
+    String userId = userCredential.user!.uid;
+    // User successfully logged in, pass userId back
+    Navigator.pop(context, userId);
+  } catch (e) {
+    // Handle login errors
+    print("Error signing in: $e");
+    // Show error message to user
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("Failed to sign in. Please check your credentials."),
+    ));
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

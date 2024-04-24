@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import "package:flutter/material.dart";
-import 'package:oway/Models/User.dart';
+import 'package:oway/Models/User.dart' as local_user; // Renamed your custom User class to local_user
+
 class Burtgel extends StatefulWidget {
   @override
   State<Burtgel> createState() => _BurtgelState();
@@ -12,8 +14,8 @@ class _BurtgelState extends State<Burtgel> {
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  final TextEditingController confirmPasswordController =TextEditingController();
+  final firebase_auth.FirebaseAuth _auth = firebase_auth.FirebaseAuth.instance;
 
   // Regex pattern for password validation
   String passwordRegex =
@@ -158,25 +160,39 @@ class _BurtgelState extends State<Burtgel> {
     );
   }
 
-  Future createUser({
-    required String surname,
-    required String name,
-    required String phone,
-    required String password,
-    }) async {
-    final docUser = FirebaseFirestore.instance.collection('User').doc();
+Future createUser({
+  required String surname,
+  required String name,
+  required String phone,
+  required String password,
+}) async {
+  try {
+    final firebase_auth.UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      email: phoneController.text.trim() + "@gmail.com",
+      password: passwordController.text.trim(),
+    );
 
-    final user = User(
-      id: docUser.id,
+    // Get the document reference for the new user
+    final docUser = FirebaseFirestore.instance.collection('User').doc(userCredential.user!.uid);
+
+    final local_user.User user = local_user.User(
+      id: userCredential.user!.uid, // Assign the user's credential ID as the document ID
       surname: surname,
       name: name,
       phone: phone,
-      password: password
-      );
+      password: password,
+    );
     final json = user.toJson();
 
     await docUser.set(json);
+    
+    print("User successfully created and registered: ${userCredential.user!.uid}");
+  } catch (e) {
+    print("Error creating user: $e");
+    // Handle error
   }
+}
+
 
   // Function to validate all form fields
   bool validateInputs() {

@@ -1,20 +1,26 @@
+// Import necessary packages
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:oway/Register/HereglegchBurtgel.dart';
-import 'package:oway/Profile.dart';
-import 'package:oway/login.dart';
+import 'package:oway/Register_Login/login.dart';
 
+// Main function
 void main() {
   runApp(HomePage());
 }
 
+// HomePage StatefulWidget
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
+// _HomePageState State
 class _HomePageState extends State<HomePage> {
+  // Variables
   int _selectedIndex = 0;
-  bool _isLoggedIn = false;
+  bool _isLoggedIn = false; // Updated variable
+  String _userId = "";
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,7 +40,7 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               icon: Icon(Icons.search),
               onPressed: () {
-                //haidag function bichne
+                // Implement search functionality
               },
             ),
           ],
@@ -133,23 +139,90 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: Colors.blue,
+          selectedItemColor: const Color.fromRGBO(33, 150, 243, 1),
           onTap: (int index) {
+  setState(() {
+    _selectedIndex = index;
+    // Check if the "Профайл" tab is selected
+    if (index == 2) {
+      // Check if the user is logged in
+      if (_isLoggedIn) {
+        // If logged in, navigate to the ProfilePage
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProfilePage(userId: _userId)),
+        );
+      } else {
+        // If not logged in, navigate to the Login page
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Login())).then((userId) {
+          // Update isLoggedIn status when the user logs in successfully
+          if (userId != null) {
             setState(() {
-              _selectedIndex = index;
-              if(index == 2){
-                if (_isLoggedIn) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProfilePage()),
-                  );
-                }
-                  else{
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
-                  }
-              }
+              _isLoggedIn = true;
+              _userId = userId;
             });
-          },
+          }
+        });
+      }
+    }
+  });
+},
+
+        ),
+      ),
+    );
+  }
+}
+
+// ProfilePage StatefulWidget
+class ProfilePage extends StatefulWidget {
+  final String userId; // Add userId parameter
+
+  ProfilePage({required this.userId});
+
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+// _ProfilePageState State
+class _ProfilePageState extends State<ProfilePage> {
+  // Variables to store user data
+  String _userName = "";
+  String _userPhone = "";
+
+  @override
+  void initState() {
+    super.initState();
+    print("pls orood ireech UserID: ${widget.userId}");
+    // Fetch user data when the ProfilePage is initialized
+    getUserData(widget.userId);
+  }
+
+  // Method to fetch user data from Firestore
+  Future<void> getUserData(String userId) async {
+    // Retrieve user data from Firestore based on userId
+    // For example:
+    DocumentSnapshot userSnapshot = await FirebaseFirestore.instance.collection('User').doc(userId).get();
+    setState(() {
+      _userName = userSnapshot['Нэр'];
+      _userPhone = userSnapshot['Утас'];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Profile'),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            // Display user data fetched from Firestore
+            Text('Name: $_userName'),
+            Text('Phone: $_userPhone'),
+          ],
         ),
       ),
     );

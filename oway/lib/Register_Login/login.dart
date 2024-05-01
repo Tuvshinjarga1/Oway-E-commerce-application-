@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
 import 'package:flutter/material.dart';
 import 'package:oway/Register_Login/HereglegchBurtgel.dart';
+//import 'package:oway/Register_Login/VendorRegister/VendorRegister.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -19,6 +20,7 @@ class _LoginState extends State<Login> {
       password: _passwordController.text,
     );
     String userId = userCredential.user!.uid;
+    String type = userCredential.user!.uid;
     // User successfully logged in, pass userId back
     Navigator.pop(context, userId);
   } catch (e) {
@@ -31,7 +33,7 @@ class _LoginState extends State<Login> {
   }
 }
 
-
+int selectedOption = 1; // Declare selectedOption as int
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +61,7 @@ class _LoginState extends State<Login> {
               SizedBox(height: 30,),
               TextFormField(
                 controller: _phoneNumberController,
-                keyboardType: TextInputType.phone, // Use phone keyboard type
+                keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   labelText: "Утасны дугаар",
                   border: OutlineInputBorder(),
@@ -76,25 +78,59 @@ class _LoginState extends State<Login> {
                   prefixIcon: Icon(Icons.password),
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Burtgel()));
-                },
-                style: ButtonStyle(
-                  alignment: Alignment.centerRight,
-                  foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-                  textStyle: MaterialStateProperty.all<TextStyle>(TextStyle(fontSize: 18)),
-                  overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                        (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.hovered)) {
-                        return Colors.transparent;
-                      }
-                      return null;
+              SizedBox(height: 10,),
+              Row(
+                children: [
+                  Radio(
+                    value: 1,
+                    groupValue: selectedOption,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedOption = value as int;
+                      });
                     },
                   ),
-                ),
-                child: Text("Бүртгүүлэх"),
+                  Text('Хэрэглэгч'),
+                  SizedBox(width: 20),
+                  Radio(
+                    value: 2,
+                    groupValue: selectedOption,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedOption = value as int;
+                      });
+                    },
+                  ),
+                  Text('Нийлүүлэгч'),
+                ],
               ),
+              SizedBox(height: 10,),
+              TextButton(
+              onPressed: () {
+                if (selectedOption == 1) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Burtgel()));
+                  print("USER SHUU");
+                } else {
+                  //Navigator.push(context, MaterialPageRoute(builder: (context) => NiiluulegchRegister()));
+                  print("VENDOR SHUU");
+                }
+              },
+              style: ButtonStyle(
+                alignment: Alignment.centerRight,
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                textStyle: MaterialStateProperty.all<TextStyle>(TextStyle(fontSize: 18)),
+                overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                      (Set<MaterialState> states) {
+                    if (states.contains(MaterialState.hovered)) {
+                      return Colors.transparent;
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              child: Text("Бүртгүүлэх"),
+            ),
+
               SizedBox(height: 30,),
               ElevatedButton(
                 child: Text("Нэвтрэх", style: TextStyle(fontSize: 21),),

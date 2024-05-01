@@ -189,7 +189,6 @@ Future createUser({
     print("User successfully created and registered: ${userCredential.user!.uid}");
   } catch (e) {
     print("Error creating user: $e");
-    // Handle error
   }
 }
 

@@ -4,7 +4,6 @@ class User{
   final String name;
   final String phone;
   final String password;
-
   User({
     this.id = '',
     required this.surname,

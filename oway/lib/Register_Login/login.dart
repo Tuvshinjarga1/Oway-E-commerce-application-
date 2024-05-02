@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
 import 'package:flutter/material.dart';
 import 'package:oway/Register_Login/HereglegchBurtgel.dart';
 import 'package:oway/Register_Login/VendorRegister/VendorReg.dart';
+import 'package:oway/UndsenNuur/user_home/ProfilePage.dart';
+import 'package:oway/UndsenNuur/vendor_home/VendorProfile.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -12,15 +15,28 @@ class _LoginState extends State<Login> {
   TextEditingController _phoneNumberController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  Future<void> _signInWithEmailAndPassword() async {
+Future<void> _signInWithEmailAndPassword() async {
   try {
     UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: _phoneNumberController.text + "@gmail.com", // Use email as phone number
       password: _passwordController.text,
     );
     String userId = userCredential.user!.uid;
-    // User successfully logged in, pass userId back
-    Navigator.pop(context, userId);
+    
+    // Check if the user is a vendor or a user
+    DocumentSnapshot userSnapshot = await FirebaseFirestore.instance.collection("User").doc(userId).get();
+    DocumentSnapshot vendorSnapshot = await FirebaseFirestore.instance.collection("Vendor").doc(userId).get();
+
+    if (userSnapshot.exists) {
+      // Navigate to user profile page
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfilePage(userId: userId)));
+    } else if (vendorSnapshot.exists) {
+      // Navigate to vendor profile page
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => VendorProfile(userId: userId)));
+    } else {
+      // Handle case where user is neither a user nor a vendor
+      print("User not found in both collections");
+    }
   } catch (e) {
     // Handle login errors
     print("Error signing in: $e");

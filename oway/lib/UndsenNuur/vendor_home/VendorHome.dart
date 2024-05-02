@@ -1,26 +1,42 @@
 // Import necessary packages
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:oway/Register_Login/login.dart';
-import 'package:oway/UndsenNuur/user_home/ProfilePage.dart';
+import 'package:oway/UndsenNuur/vendor_home/vendorpro_pages/VendorProfile.dart';
 
-// Main function
-void main() {
-  runApp(VendorHomePage());
-}
-
-// VendorHomePage StatefulWidget
 class VendorHomePage extends StatefulWidget {
+  final String userId;
+  
+  VendorHomePage({required this.userId});
+
   @override
   _VendorHomePageState createState() => _VendorHomePageState();
 }
 
-// _VendorHomePageState State
 class _VendorHomePageState extends State<VendorHomePage> {
-  // Variables
   int _selectedIndex = 0;
-  bool _isLoggedIn = false; // Updated variable
+  bool _isLoggedIn = false;
   String _userId = "";
+  String _userName = "";
 
+  @override
+  void initState() {
+    super.initState();
+    print("pls orood ireech UserID: ${widget.userId}");
+    // Fetch user data when the ProfilePage is initialized
+    getUserData(widget.userId);
+  }
+
+  // Method to fetch user data from Firestore
+  Future<void> getUserData(String userId) async {
+    // Retrieve user data from Firestore based on userId
+    // For example:
+    DocumentSnapshot userSnapshot = await FirebaseFirestore.instance.collection('Vendor').doc(userId).get();
+    setState(() {
+      _userName = userSnapshot['Нэр'];
+      _userId = userSnapshot['id'];
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -55,7 +71,7 @@ class _VendorHomePageState extends State<VendorHomePage> {
               ),
               SizedBox(height: 20),
               
-              
+              Text("Тавтай морил $_userName"),
               
             ],
           ),
@@ -80,14 +96,13 @@ class _VendorHomePageState extends State<VendorHomePage> {
           onTap: (int index) {
   setState(() {
     _selectedIndex = index;
-    // Check if the "Профайл" tab is selected
+    //"Профайл"
     if (index == 2) {
-      // Check if the user is logged in
-      if (_isLoggedIn) {
-        // If logged in, navigate to the ProfilePage
+      if (_userId == _userId) {
+        print("user id ne shuuu"+_userId);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ProfilePage(userId: _userId)),
+          MaterialPageRoute(builder: (context) => VendorProfile(userId: _userId)),
         );
       } else {
         // If not logged in, navigate to the Login page

@@ -17,7 +17,7 @@ void main() async
     routes: {
       'phone': (context) => MyPhone(),
       'verify': (context) => MyVerify(),
-      'home': (context) => HomePage(),
+      'home': (context) => HomePage(userId: '',),
     },
   ));
 }

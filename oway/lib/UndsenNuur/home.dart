@@ -1,24 +1,23 @@
-// Import necessary packages
 import 'package:flutter/material.dart';
 import 'package:oway/Register_Login/login.dart';
 import 'package:oway/UndsenNuur/user_home/ProfilePage.dart';
+import 'package:oway/UndsenNuur/vendor_home/VendorHome.dart';
 
-// Main function
 void main() {
-  runApp(HomePage());
+  runApp(HomePage(userId: '',));
 }
 
-// HomePage StatefulWidget
 class HomePage extends StatefulWidget {
+  final String userId;
+  
+  HomePage({required this.userId});
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-// _HomePageState State
 class _HomePageState extends State<HomePage> {
-  // Variables
   int _selectedIndex = 0;
-  bool _isLoggedIn = false; // Updated variable
+  bool _isLoggedIn = false;
   String _userId = "";
 
   @override
@@ -154,19 +153,22 @@ class _HomePageState extends State<HomePage> {
         );
       } else {
         // If not logged in, navigate to the Login page
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Login())).then((userId) {
-          // Update isLoggedIn status when the user logs in successfully
-          if (userId != null) {
-            setState(() {
-              _isLoggedIn = true;
-              _userId = userId;
-            });
-          }
-        });
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Login()),
+        );
       }
+    } else if (_isLoggedIn && index == 0) {
+      // Check if the vendor is logged in and "Нүүр" tab is selected
+      // If the Vendor is logged in, launch the VendorHomePage
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => VendorHomePage(userId: _userId)),
+      );
     }
   });
-},
+}
+
 
         ),
       ),

@@ -2,49 +2,55 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class VendorProduct extends StatelessWidget {
-  final String userId;
+  final String productId;
 
-  const VendorProduct({Key? key, required this.userId}) : super(key: key);
+  VendorProduct({required this.productId});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Vendor Products'),
+        title: Text('Product Details'),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('VendorProduct')
-            .where('Vendorid', isEqualTo: userId)
+            .doc('SEbYOj0bTGlQ77MWBcno')
             .snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(),
             );
           }
-          if (snapshot.hasError) {
+
+          if (!snapshot.hasData || !snapshot.data!.exists) {
             return Center(
-              child: Text('Error: ${snapshot.error}'),
+              child: Text('No data found for this product Id.'),
             );
           }
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(
-              child: Text('No products found for this vendor.'),
-            );
-          }
-          return ListView(
-            children: snapshot.data!.docs.map((DocumentSnapshot document) {
-              Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-              return ListTile(
-                title: Text(data['ner'] ?? ''),
-                subtitle: Text(data['une'] != null ? '\$${data['une']}' : ''),
-                // Add more fields as needed
-              );
-            }).toList(),
+
+          var data = snapshot.data!.data() as Map<String, dynamic>;
+
+          // Display your data here, for example:
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Product Name: ${data['Нэр']}'),
+                  Text('Price: \$${data['Үнэ']}'),
+                  // Add more fields as needed
+                ],
+              ),
+            ),
           );
         },
       ),
     );
   }
 }
+
+// Example usage:
+// VendorProduct(productId: 'SEbYOj0bTGlQ77MWBcno');

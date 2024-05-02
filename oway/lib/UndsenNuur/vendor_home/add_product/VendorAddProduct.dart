@@ -194,7 +194,6 @@ class _VendorAddProductState extends State<VendorAddProduct> {
                       String nemeltTailbarValue = nemelt_tailbar.text;
                       String hugatsaaValue = hugatsaa.text;
                       String too_shirhegValue = too_shirheg.text;
-                      // // Printing values from text controllers
                       // print('Нэр: $nerValue');
                       // print('Үнэ: $uneValue');
                       // if(selectedCategory != null) {

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:oway/Register_Login/login.dart';
 import 'package:oway/UndsenNuur/vendor_home/vendorpro_pages/VendorInfo.dart';
+import 'package:oway/UndsenNuur/vendor_home/vendorpro_pages/VendorProduct.dart';
 
 class VendorProfile extends StatefulWidget {
   final String userId;
@@ -106,6 +107,10 @@ class _VendorProfilePageState extends State<VendorProfile> {
               SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
+                  Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => VendorProduct(userId: _userId)),
+                );
                   print("Products button tapped");
                 },
                 child: Row(

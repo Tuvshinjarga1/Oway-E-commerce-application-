@@ -1,44 +1,58 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:oway/Models/Vendor.dart' as local_vendor;
+import 'package:oway/Models/Product.dart' as local_product;
 
-class NiiluulegchRegister extends StatefulWidget {
-  const NiiluulegchRegister({Key? key}) : super(key: key);
+class VendorAddProduct extends StatefulWidget {
+  final String userId;
+  const VendorAddProduct({Key? key, required this.userId}) : super(key: key);
   @override
-  _NiiluulegchRegisterState createState() => _NiiluulegchRegisterState();
+  _VendorAddProductState createState() => _VendorAddProductState();
 }
 
-class _NiiluulegchRegisterState extends State<NiiluulegchRegister> {
-  String? selectNiiluulegch;
-  String? selectedValue1;
-  String? selectedValue2;
-  String? selectedValue3;
-  String? selectedNerA;
-  String? selectedNerB;
-  String? selectedNerC;
-  File? myImage;
-  String? mergejil;
-  //ed nariig garaas avch bui utgandaa ashigliydaa ho, odoo FLAdaltsy, uur arga uldsngu
-  final TextEditingController ovog = TextEditingController();
-  final TextEditingController ner = TextEditingController();
-//  final TextEditingController mergejil = TextEditingController();
-  final TextEditingController registr = TextEditingController();
-  final TextEditingController utasnii_dugaar =TextEditingController();
-  final TextEditingController password =TextEditingController();
-  final TextEditingController password_confirm =TextEditingController();
-  final TextEditingController hayg_delgerengui =TextEditingController();
-  final TextEditingController image_path =TextEditingController(); //eniig ghdee sn sudalnaa
-  final firebase_auth.FirebaseAuth _auth = firebase_auth.FirebaseAuth.instance;
+class _VendorAddProductState extends State<VendorAddProduct> {
 
-  var nerHayg;
-  var nerHayg1;
-  var nerHayg2;
+  String _userId = "";
+
+    @override
+  void initState() {
+    super.initState();
+    print("pls orood ireech UserID: ${widget.userId}");
+    // Fetch user data when the ProfilePage is initialized
+    getUserData(widget.userId);
+  }
+    Future<void> getUserData(String userId) async {
+    DocumentSnapshot userSnapshot =
+        await FirebaseFirestore.instance.collection('Vendor').doc(userId).get();
+    setState(() {
+      _userId = userSnapshot['id'];
+    });
+  }
+  String? selectAngilal;
+  String? selectDed_Angilal;
+  String? selectBelen_eseh;
+  String? selectHugatsaa;
+  String? selectHemjuur;
+  File? myImage;
+  //ed nariig garaas avch bui utgandaa ashigliydaa ho, odoo FLAdaltsy, uur arga uldsngu
+  final TextEditingController ner = TextEditingController();
+  final TextEditingController une = TextEditingController();
+  final TextEditingController angilal = TextEditingController();
+  final TextEditingController ded_angilal = TextEditingController();
+  final TextEditingController nemelt_tailbar = TextEditingController();
+  final TextEditingController belen_eseh = TextEditingController();
+  final TextEditingController hugatsaa = TextEditingController();
+  final TextEditingController too_shirheg = TextEditingController(); //eniig ghdee sn sudalnaa
+
+  String? selectedCategory;
+  String? selectedSubcategory;
+  List<String> categories = ["Мах 1", "Сүү 2", "Хувцас 3"]; // Example categories
+  List<String> subcategories = ["Subcategory 1", "Subcategory 2", "Subcategory 3"]; // Example subcategories
+  String? selectedOption;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,13 +64,11 @@ class _NiiluulegchRegisterState extends State<NiiluulegchRegister> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextFormField(
-                controller: ovog,
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(
-                  labelText: "Овог",
-                  border: OutlineInputBorder(),
-                ),
+              ElevatedButton(
+                onPressed: () async {
+                  getImage(ImageSource.gallery); // Open gallery to select image
+                },
+                child: Text('Бүтээгдэхүүний зураг оруулах'),
               ),
               SizedBox(height: 10,),
               TextFormField(
@@ -67,307 +79,168 @@ class _NiiluulegchRegisterState extends State<NiiluulegchRegister> {
                   border: OutlineInputBorder(),
                 ),
               ),
-
-
-
-              SizedBox(height: 10.0),
-              StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection('NiiluulegchType').snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
-                  }
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  }
-
-                  final List<DropdownMenuItem<String>> items = [];
-                  snapshot.data!.docs.forEach((doc) {
-                    items.add(
-                      DropdownMenuItem(
-                        value: doc.id,
-                        child: Text(doc['ner']),
-                      ),
-                    );
-                  });
-
-                  return DropdownButton<String>(
-                    items: items,
-                    onChanged: (String? value) {
-                      setState(() {
-                        mergejil = value;
-                      });
-                      print('Selected mergejil: $mergejil');
-                    },
-                    value: mergejil,
-                    hint: mergejil != null ? Text(mergejil!) : Text('Select Item'),
-                  );
-                },
-              ),
-
-            Text('Ажил: $mergejil'),
-
-
-
               SizedBox(height: 10,),
               TextFormField(
-                controller: registr,
+                controller: une,
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
-                  labelText: "Регистр",
+                  labelText: "Үнэ",
                   border: OutlineInputBorder(),
                 ),
               ),
               SizedBox(height: 10,),
+              Row(
+  children: [
+    Expanded(
+      child: DropdownButtonFormField<String>(
+        value: selectedCategory,
+        onChanged: (newValue) {
+          setState(() {
+            selectedCategory = newValue;
+          });
+        },
+        items: categories.map((category) {
+          return DropdownMenuItem<String>(
+            value: category,
+            child: Text(category),
+          );
+        }).toList(),
+        decoration: InputDecoration(
+          labelText: "Ангилал",
+          border: OutlineInputBorder(),
+        ),
+      ),
+    ),
+    SizedBox(width: 10),
+    Expanded(
+      child: DropdownButtonFormField<String>(
+        value: selectedSubcategory,
+        onChanged: (newValue) {
+          setState(() {
+            selectedSubcategory = newValue;
+          });
+        },
+        items: subcategories.map((subcategory) {
+          return DropdownMenuItem<String>(
+            value: subcategory,
+            child: Text(subcategory),
+          );
+        }).toList(),
+        decoration: InputDecoration(
+          labelText: "Дэд ангилал",
+          border: OutlineInputBorder(),
+        ),
+      ),
+    ),
+  ],
+),
+
+              SizedBox(height: 10,),
               TextFormField(
-                controller: utasnii_dugaar,
-                keyboardType: TextInputType.phone,
+                controller: nemelt_tailbar,
                 decoration: InputDecoration(
-                  labelText: "Утасны дугаар",
+                  labelText: "Нэмэлт тайлбар",
                   border: OutlineInputBorder(),
                 ),
               ),
               SizedBox(height: 10,),
-              TextFormField(
-                controller: password,
-                keyboardType: TextInputType.visiblePassword,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: "Нууц үг",
-                  border: OutlineInputBorder(),
-                ),
-              ),
+              Row(
+  children: [
+    Radio(
+      value: "Бэлэн",
+      groupValue: selectedOption,
+      onChanged: (value) {
+        setState(() {
+          selectedOption = value as String?;
+        });
+      },
+    ),
+    Text("Бэлэн"),
+    Radio(
+      value: "Бэлэн бус",
+      groupValue: selectedOption,
+      onChanged: (value) {
+        setState(() {
+          selectedOption = value as String?;
+        });
+      },
+    ),
+    Text("Бэлэн бус"),
+  ],
+),
               SizedBox(height: 10,),
               TextFormField(
-                controller: password_confirm,
-                keyboardType: TextInputType.visiblePassword,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: "Нууц үг дахин оруулна уу.",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-
-
-
-              StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection("AimagHot").snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text("Some error occurred ${snapshot.error}"),
-                );
-              }
-
-              List<DropdownMenuItem<String>> programItems1 = [];
-              
-              if (!snapshot.hasData) {
-                return const CircularProgressIndicator();
-              } else {
-                final selectProgram = snapshot.data?.docs.reversed.toList();
-                if (selectProgram != null) {
-                  for (var program in selectProgram) {
-                    nerHayg = program['ner'];
-                    programItems1.add(
-                      DropdownMenuItem<String>(
-                        value: program.id,
-                        child: Text(
-                          nerHayg,
-                        ),
-                      ),
-                    );
-                  }
-                }
-
-                return Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    padding: const EdgeInsets.only(right: 15, left: 15),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 1),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      children: [
-                        DropdownButton<String>(
-                          value: selectedValue1,
-                          onChanged: (String? value) {
-                            setState(() {
-                              selectedValue1 = value;
-                              selectedValue2 = null;
-                              selectedValue3 = null;
-                            });
-                          },
-                          underline: const SizedBox(),
-                          isExpanded: true,
-                          hint: const Text(
-                            "Аймаг/Хот",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          items: programItems1,
-                        ),
-
-                        if (selectedValue1 != null)
-                          FutureBuilder<QuerySnapshot>(
-                            future: FirebaseFirestore.instance
-                                .collection("AimagHot")
-                                .doc(selectedValue1)
-                                .collection("Duureg")
-                                .get(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return CircularProgressIndicator();
-                              }
-                              if (snapshot.hasError) {
-                                return Text("Error fetching subcollection: ${snapshot.error}");
-                              }
-                              List<DropdownMenuItem<String>> programItems2 = [];
-                              snapshot.data?.docs.forEach((doc) {
-                                nerHayg1 = doc['ner'];
-                                programItems2.add(
-                                  DropdownMenuItem<String>(
-                                    value: doc.id,
-                                    child: Text(
-                                      nerHayg1,
-                                    ),
-                                  ),
-                                );
-                              });
-                              return DropdownButton<String>(
-                                underline: SizedBox(),
-                                isExpanded: true,
-                                hint: const Text(
-                                  "Сум/Дүүрэг",
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                                value: selectedValue2,
-                                items: programItems2,
-                                onChanged: (String? value) {
-                                  setState(() {
-                                    selectedValue2 = value;
-                                    selectedValue3 = null;
-                                  });
-                                },
-                              );
-                            },
-                          ),
-                        if (selectedValue2 != null)
-                          FutureBuilder<QuerySnapshot>(
-                            future: FirebaseFirestore.instance
-                                .collection("AimagHot")
-                                .doc(selectedValue1)
-                                .collection("Duureg")
-                                .doc(selectedValue2)
-                                .collection("Horoo")
-                                .get(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return CircularProgressIndicator();
-                              }
-                              if (snapshot.hasError) {
-                                return Text("Error fetching subcollection: ${snapshot.error}");
-                              }
-                              List<DropdownMenuItem<String>> programItems3 = [];
-                              snapshot.data?.docs.forEach((doc) {
-                                nerHayg2 = doc['ner'];
-                                programItems3.add(
-                                  DropdownMenuItem<String>(
-                                    value: doc.id,
-                                    child: Text(
-                                      nerHayg2,
-                                    ),
-                                  ),
-                                );
-                              });
-                              return DropdownButton<String>(
-                                underline: SizedBox(),
-                                isExpanded: true,
-                                hint: const Text(
-                                  "Баг/Хороо",
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                                value: selectedValue3,
-                                items: programItems3,
-                                onChanged: (String? value) {
-                                  setState(() {
-                                    selectedValue3 = value;
-                                  });
-                                },
-                              );
-                            },
-                          ),
-                        if (selectedValue3 != null)
-                          Text("You selected: $selectedValue3"),
-                      ],
-                    ),
-                  ),
-                );
-              }
-            },
-          ),
-
-
-              SizedBox(height: 10,),
-              TextFormField(
-                controller: hayg_delgerengui,
+                controller: hugatsaa,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
-                  labelText: "Хаягийн дэлгэрэнгүй",
+                  labelText: "Бүтээгдэхүүн болох хугацаа",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 16.0),
+              TextFormField(
+                controller: too_shirheg,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  labelText: "Тоо ширхэг",
                   border: OutlineInputBorder(),
                 ),
               ),
               SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () async {
-                  getImage(ImageSource.gallery); // Open gallery to select image
-                },
-                child: Text('Цээж зураг оруулах'),
-              ),
-              SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: () async {
-                  //print('Mergejil orj irmeerenshu $mergejil');
-                  //print("Aimag hot shuu ho: "+nerHayg);
-                  //print("sum duureg shuu ho: "+nerHayg1);
-                  //print("bag horoo shuu ho: "+nerHayg2);
-                  if (password.text == password_confirm.text){
-                  final surname = ovog.text;
-                  final name = ner.text;
-                  final work = mergejil;
-                  final registerNumber = registr.text;
-                  final phone = utasnii_dugaar.text;
-                  final password = password_confirm.text;
-                  final hayg = (nerHayg+"-"+nerHayg1+"-"+nerHayg2);
-                  final delgerengui = hayg_delgerengui.text;
-                  final orshinSuugaa = hayg_delgerengui.text; //turdee ingd tavichy, alban ysnii hayg avah tul bjig
-                  final tseejZurag = await uploadFile((downloadURL) {
-                      print("Download URL tseejZurgan dotor: $downloadURL");
+                      String nerValue = ner.text;
+                      String uneValue = une.text;
+                      String nemeltTailbarValue = nemelt_tailbar.text;
+                      String hugatsaaValue = hugatsaa.text;
+                      String too_shirhegValue = too_shirheg.text;
+                      // // Printing values from text controllers
+                      // print('Нэр: $nerValue');
+                      // print('Үнэ: $uneValue');
+                      // if(selectedCategory != null) {
+                      //   print('Ангилал: $selectedCategory');
+                      // }
+                      // if(selectedSubcategory != null) {
+                      //   print('Дэд ангилал: $selectedSubcategory');
+                      // }
+                      
+                      // print('Нэмэлт тайлбар: $nemeltTailbarValue');
+                      // if(selectedOption != null) {
+                      //   print('Бэлэх эсэх: $selectedOption');
+                      // }
+                      // print('Бүтээгдэхүүн болох хугацаа: $hugatsaaValue');
+                      // print('Тоо ширхэг: $too_shirhegValue');
+                      // print(_userId);
+                  final zurag = await uploadFile((downloadURL) {
+                      print("Download URL buteeghuunZurag dotor: $downloadURL");
                     });
-                  createVendor(
-                    surname: surname,
-                    name: name,
-                    work: work.toString(),
-                    registerNumber: registerNumber,
-                    phone: phone,
-                    password: password,
-                    hayg: hayg,
-                    delgerengui: delgerengui,
-                    orshinSuugaa: orshinSuugaa,
-                    tseejZurag: tseejZurag.toString(),
+                  final ner1 = nerValue;
+                  final une1 = uneValue;
+                  final angilal1 = selectedCategory;
+                  final ded_angilal1 = selectedSubcategory;
+                  final nemelt_tailbar1 = nemeltTailbarValue;
+                  final belen_eseh1 = selectedOption;
+                  final hugatsaa1 = hugatsaaValue;
+                  final too_shirheg1 = too_shirhegValue;
+                  createProduct(
+                    Vendorid: _userId,
+                    zurag: zurag.toString(),
+                    ner: ner1,
+                    une: une1,
+                    angilal: angilal1.toString(),
+                    ded_angilal: ded_angilal1.toString(),
+                    nemelt_tailbar: nemelt_tailbar1,
+                    belen_eseh: belen_eseh1.toString(),
+                    hugatsaa: hugatsaa1,
+                    too_shirheg: too_shirheg1,
                     );
                     openBottomSheet();
-                  print("Амжилттай бүртгэгдлээ");
                   ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(phone+' дугаартай хэрэглэгч амжилттай бүртгэгдлээ.')),
+                  SnackBar(content: Text('Бүтээгдэхүүн амжилттай бүртгэгдлээ')),
                   );
-                  }
-                  else{
-                    ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Password таарахгүй байна.')),
-                  );
-                  }
+                  
                 },
-                child: Text('Бүртгүүлэх'),
+                child: Text('Бүтээгдэхүүн нэмэх'),
               ),
             ],
           ),
@@ -471,62 +344,44 @@ class _NiiluulegchRegisterState extends State<NiiluulegchRegister> {
   }
 }
 
-  // void onUploadComplete(String downloadURL) {
-  //   print("File uploaded successfully. Download URL: $downloadURL");
-  //   ene bol zapaas bas umnuh version
-  // }
-
   void onUploadComplete(String downloadURL) {
     print("$downloadURL");
     // ene ajillaj bga
   }
-Future createVendor({
-  required String surname,
-  required String name,
-  required String work,
-  required String registerNumber,
-  required String phone,
-  required String password,
-  required String hayg,
-  required String delgerengui,
-  required String orshinSuugaa,
-  required String tseejZurag,
+
+Future<void> createProduct({
+  required String Vendorid,
+  required String zurag,
+  required String ner,
+  required String une,
+  required String angilal,
+  required String ded_angilal,
+  required String nemelt_tailbar,
+  required String belen_eseh,
+  required String hugatsaa,
+  required String too_shirheg,
 }) async {
-  try {
-    final firebase_auth.UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-      email: utasnii_dugaar.text.trim() + "@gmail.com",
-      password: password.trim(),
+
+    final docProduct = FirebaseFirestore.instance.collection('VendorProduct').doc();
+    String docId = docProduct.id;
+    final local_product.Product product = local_product.Product(
+      Vendorid: Vendorid,
+        id: docId,
+        zurag: zurag,
+        ner: ner,
+        une: une,
+        angilal: angilal,
+        ded_angilal: ded_angilal,
+        nemelt_tailbar: nemelt_tailbar,
+        belen_eseh: belen_eseh,
+        hugatsaa: hugatsaa,
+        too_shirheg: too_shirheg,
     );
+    final json = product.toJson();
 
-    // Get the document reference for the new user
-    final docUser = FirebaseFirestore.instance.collection('Vendor').doc(userCredential.user!.uid);
-
-    final local_vendor.Vendor user = local_vendor.Vendor(
-      id: userCredential.user!.uid, // Assign the user's credential ID as the document ID
-        surname: surname,
-        name: name,
-        work: work,
-        registerNumber: registerNumber,
-        phone: phone,
-        password: password,
-        hayg: hayg,
-        delgerengui: delgerengui,
-        orshinSuugaa: orshinSuugaa,
-        tseejZurag: tseejZurag,
-    );
-    final json = user.toJson();
-
-    await docUser.set(json);
+    await docProduct.set(json);
     
-    print("User successfully created and registered: ${userCredential.user!.uid}");
-  } catch (e) {
-    print("Error creating user: $e");
-  }
+    print("Product successfully created and vendorID: $Vendorid");
+    print("Product id: $docId");
+  } 
 }
-}
-
-//ene ih heregtei ed
-                  //  final tseejZurag = await uploadFile((downloadURL) {
-                  //     print("Download URL: $downloadURL");
-                  //   });
-                  //   print("Download URL in tseejZurag: $tseejZurag");

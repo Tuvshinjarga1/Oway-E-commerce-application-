@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:oway/Register_Login/login.dart';
+import 'package:oway/UndsenNuur/vendor_home/add_product/VendorAddProduct.dart';
 import 'package:oway/UndsenNuur/vendor_home/vendorpro_pages/VendorProfile.dart';
 
 class VendorHomePage extends StatefulWidget {
@@ -77,50 +78,55 @@ class _VendorHomePageState extends State<VendorHomePage> {
           ),
         ),
         bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Нүүр',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.add),
-              label: 'Бүтээгдэхүүн нэмэх',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Профайл',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: const Color.fromRGBO(33, 150, 243, 1),
-          onTap: (int index) {
-  setState(() {
-    _selectedIndex = index;
-    //"Профайл"
-    if (index == 2) {
-      if (_userId == _userId) {
-        print("user id ne shuuu"+_userId);
+  items: const <BottomNavigationBarItem>[
+    BottomNavigationBarItem(
+      icon: Icon(Icons.home),
+      label: 'Нүүр',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.add),
+      label: 'Бүтээгдэхүүн нэмэх',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.person),
+      label: 'Профайл',
+    ),
+  ],
+  currentIndex: _selectedIndex,
+  selectedItemColor: const Color.fromRGBO(33, 150, 243, 1),
+  onTap: (int index) {
+    setState(() {
+      _selectedIndex = index;
+      if (index == 1) {
+        // Navigate to VendorAddProduct page
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => VendorProfile(userId: _userId)),
+          MaterialPageRoute(builder: (context) => VendorAddProduct(userId: _userId)),
         );
-      } else {
-        // If not logged in, navigate to the Login page
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Login())).then((userId) {
-          // Update isLoggedIn status when the user logs in successfully
-          if (userId != null) {
-            setState(() {
-              _isLoggedIn = true;
-              _userId = userId;
-            });
-          }
-        });
+      } else if (index == 2) {
+        // Navigate to VendorProfile page
+        if (_userId.isNotEmpty) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => VendorProfile(userId: _userId)),
+          );
+        } else {
+          // If not logged in, navigate to the Login page
+          Navigator.push(context, MaterialPageRoute(builder: (context) => Login())).then((userId) {
+            // Update isLoggedIn status when the user logs in successfully
+            if (userId != null) {
+              setState(() {
+                _isLoggedIn = true;
+                _userId = userId;
+              });
+            }
+          });
+        }
       }
-    }
-  });
-},
+    });
+  },
+),
 
-        ),
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
 import 'package:flutter/material.dart';
 import 'package:oway/Register_Login/HereglegchBurtgel.dart';
-//import 'package:oway/Register_Login/VendorRegister/VendorRegister.dart';
+import 'package:oway/Register_Login/VendorRegister/VendorReg.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -9,7 +9,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   TextEditingController _phoneNumberController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
@@ -20,7 +19,6 @@ class _LoginState extends State<Login> {
       password: _passwordController.text,
     );
     String userId = userCredential.user!.uid;
-    String type = userCredential.user!.uid;
     // User successfully logged in, pass userId back
     Navigator.pop(context, userId);
   } catch (e) {
@@ -111,7 +109,7 @@ int selectedOption = 1; // Declare selectedOption as int
                   Navigator.push(context, MaterialPageRoute(builder: (context) => Burtgel()));
                   print("USER SHUU");
                 } else {
-                  //Navigator.push(context, MaterialPageRoute(builder: (context) => NiiluulegchRegister()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => NiiluulegchRegister()));
                   print("VENDOR SHUU");
                 }
               },

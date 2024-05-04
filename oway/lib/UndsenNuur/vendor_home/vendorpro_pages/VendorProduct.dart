@@ -1,50 +1,45 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class VendorProduct extends StatelessWidget {
-  final String productId;
+  final String vendorId;
 
-  VendorProduct({required this.productId});
+  VendorProduct({required this.vendorId});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Product Details'),
+        title: Text('Products by Vendor'),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('VendorProduct')
-            .doc('SEbYOj0bTGlQ77MWBcno')
+            .where('Vendorid', isEqualTo: vendorId)
             .snapshots(),
-        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(),
             );
           }
 
-          if (!snapshot.hasData || !snapshot.data!.exists) {
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
             return Center(
-              child: Text('No data found for this product Id.'),
+              child: Text('No products found for this vendor.'),
             );
           }
 
-          var data = snapshot.data!.data() as Map<String, dynamic>;
+          return ListView(
+            children: snapshot.data!.docs.map((DocumentSnapshot document) {
+              var data = document.data() as Map<String, dynamic>;
 
-          // Display your data here, for example:
-          return SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Product Name: ${data['Нэр']}'),
-                  Text('Price: \$${data['Үнэ']}'),
-                  // Add more fields as needed
-                ],
-              ),
-            ),
+              // Display your data here, for example:
+              return ListTile(
+                title: Text(data['Нэр']),
+                subtitle: Text('Price: \$${data['Үнэ']}'),
+              );
+            }).toList(),
           );
         },
       ),
@@ -52,5 +47,3 @@ class VendorProduct extends StatelessWidget {
   }
 }
 
-// Example usage:
-// VendorProduct(productId: 'SEbYOj0bTGlQ77MWBcno');

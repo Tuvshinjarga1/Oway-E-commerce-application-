@@ -109,7 +109,7 @@ class _VendorProfilePageState extends State<VendorProfile> {
                 onTap: () {
                   Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => VendorProduct(productId: _userId)),
+                  MaterialPageRoute(builder: (context) => VendorProduct(vendorId: _userId)),
                 );
                   print("Products button tapped");
                 },

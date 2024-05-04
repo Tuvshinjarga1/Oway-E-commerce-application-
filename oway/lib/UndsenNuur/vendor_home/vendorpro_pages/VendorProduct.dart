@@ -10,7 +10,7 @@ class VendorProduct extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Products by Vendor'),
+        title: Text('Миний бүтээгдэхүүнүүд'),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -26,12 +26,13 @@ class VendorProduct extends StatelessWidget {
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
             return Center(
-              child: Text('No products found for this vendor.'),
+              child: Text('Танд бүтээгдэхүүн одоогоор байхгүй байна.'),
             );
           }
 
-          return ListView(
-            children: snapshot.data!.docs.map((DocumentSnapshot document) {
+          return ListView.separated(
+            itemBuilder: (context, index) {
+              var document = snapshot.data!.docs[index];
               var data = document.data() as Map<String, dynamic>;
 
               // Display your data here, for example:
@@ -39,7 +40,10 @@ class VendorProduct extends StatelessWidget {
                 title: Text(data['Нэр']),
                 subtitle: Text('Price: \$${data['Үнэ']}'),
               );
-            }).toList(),
+            },
+            separatorBuilder: (context, index) =>
+                Divider(), // Add a divider between items
+            itemCount: snapshot.data!.docs.length,
           );
         },
       ),

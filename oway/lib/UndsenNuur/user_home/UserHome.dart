@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:oway/Register_Login/login.dart';
 import 'package:oway/UndsenNuur/user_home/ProfilePage.dart';
@@ -53,7 +54,7 @@ class _UserHomeState extends State<UserHome> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  'Онцлох бүтээгдэхүүнүүд',
+                  'Featured Products',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -61,33 +62,46 @@ class _UserHomeState extends State<UserHome> {
                 ),
               ),
               SizedBox(height: 10),
-              Container(
-                height: 200,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 5,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Container(
-                        width: 150,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.grey[200],
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance.collection('VendorProduct').where('Онцлох', isEqualTo: true).snapshots(),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  }
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return CircularProgressIndicator();
+                    default:
+                      return Container(
+                        height: 200,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                            Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                            return Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Container(
+                                width: 150,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.grey[200],
+                                ),
+                                child: Center(
+                                  child: Text(data['Нэр']),
+                                ),
+                              ),
+                            );
+                          }).toList(),
                         ),
-                        child: Center(
-                          child: Text('Онцлох $index'),
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                      );
+                  }
+                },
               ),
               SizedBox(height: 20),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  'Бүтээгдэхүүн',
+                  'Products',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -95,25 +109,40 @@ class _UserHomeState extends State<UserHome> {
                 ),
               ),
               SizedBox(height: 10),
-              GridView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                ),
-                itemCount: 6,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey[200],
-                    ),
-                    child: Center(
-                      child: Text('Бүтээгдэхүүн $index'),
-                    ),
-                  );
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance.collection('VendorProduct').snapshots(),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  }
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return CircularProgressIndicator();
+                    default:
+                      return GridView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                        ),
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          DocumentSnapshot document = snapshot.data!.docs[index];
+                          Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                          return Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.grey[200],
+                            ),
+                            child: Center(
+                              child: Text(data['Нэр']),
+                            ),
+                          );
+                        },
+                      );
+                  }
                 },
               ),
             ],
@@ -137,39 +166,30 @@ class _UserHomeState extends State<UserHome> {
           currentIndex: _selectedIndex,
           selectedItemColor: const Color.fromRGBO(33, 150, 243, 1),
           onTap: (int index) {
-  setState(() {
-    _selectedIndex = index;
-    // Check if the "Профайл" tab is selected
-    if (index == 2) {
-      // Check if the user is logged in
-      if (_userId == _userId) {
-        // If logged in, navigate to the ProfilePage
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ProfilePage(userId: _userId)),
-        );
-      } else {
-        // If not logged in, navigate to the Login page
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Login()),
-        );
-      }
-    } else if (_isLoggedIn && index == 0) {
-      // Check if the vendor is logged in and "Нүүр" tab is selected
-      // If the Vendor is logged in, launch the VendorUserHome
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => UserHome(userId: _userId)),
-      );
-    }
-  });
-}
-
-
+            setState(() {
+              _selectedIndex = index;
+              if (index == 2) {
+                if (_userId == _userId) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfilePage(userId: _userId)),
+                  );
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Login()),
+                  );
+                }
+              } else if (_isLoggedIn && index == 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UserHome(userId: _userId)),
+                );
+              }
+            });
+          },
         ),
       ),
     );
   }
 }
-

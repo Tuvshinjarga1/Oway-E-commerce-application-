@@ -1,6 +1,6 @@
-// ProfilePage StatefulWidget
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:oway/UndsenNuur/home.dart';
 
 class ProfilePage extends StatefulWidget {
   final String userId; // Add userId parameter
@@ -11,7 +11,6 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
-// _ProfilePageState State
 class _ProfilePageState extends State<ProfilePage> {
   // Variables to store user data
   String _userName = "";
@@ -41,8 +40,20 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Профайл'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage(userId: '')),
+                (Route<dynamic> route) => false,
+              );
+            },
+          ),
+        ],
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(

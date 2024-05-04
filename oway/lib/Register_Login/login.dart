@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:oway/Register_Login/HereglegchBurtgel.dart';
 import 'package:oway/Register_Login/VendorRegister/VendorReg.dart';
 import 'package:oway/UndsenNuur/home.dart';
+import 'package:oway/UndsenNuur/user_home/UserHome.dart';
 import 'package:oway/UndsenNuur/vendor_home/VendorHome.dart';
 
 class Login extends StatefulWidget {
@@ -29,7 +30,7 @@ Future<void> _signInWithEmailAndPassword() async {
 
     if (userSnapshot.exists) {
       // Navigate to user profile page
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(userId: userId)));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => UserHome(userId: userId)));
     } else if (vendorSnapshot.exists) {
       // Navigate to vendor profile page
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => VendorHomePage(userId: userId)));

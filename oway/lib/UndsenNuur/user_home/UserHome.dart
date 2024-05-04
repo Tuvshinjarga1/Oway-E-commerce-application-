@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:oway/Register_Login/login.dart';
-import 'package:oway/UndsenNuur/user_home/UserHome.dart';
-import 'package:oway/UndsenNuur/vendor_home/VendorHome.dart';
+import 'package:oway/UndsenNuur/user_home/ProfilePage.dart';
 
-void main() {
-  runApp(HomePage(userId: '',));
-}
-
-class HomePage extends StatefulWidget {
+class UserHome extends StatefulWidget {
   final String userId;
   
-  HomePage({required this.userId});
+  UserHome({required this.userId});
   @override
-  _HomePageState createState() => _HomePageState();
+  _UserHomeState createState() => _UserHomeState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _UserHomeState extends State<UserHome> {
   int _selectedIndex = 0;
   bool _isLoggedIn = false;
-  String _userId = "";
+  String _userId = '';
 
   @override
   Widget build(BuildContext context) {
+    _userId = widget.userId;
     return MaterialApp(
       title: '',
       theme: ThemeData(
@@ -52,6 +48,7 @@ class _HomePageState extends State<HomePage> {
                 'assets/ehleh.png',
                 fit: BoxFit.cover,
               ),
+              Text("User ID: $_userId"),
               SizedBox(height: 20),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -145,11 +142,11 @@ class _HomePageState extends State<HomePage> {
     // Check if the "Профайл" tab is selected
     if (index == 2) {
       // Check if the user is logged in
-      if (_isLoggedIn) {
+      if (_userId == _userId) {
         // If logged in, navigate to the ProfilePage
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => UserHome(userId: _userId)),
+          MaterialPageRoute(builder: (context) => ProfilePage(userId: _userId)),
         );
       } else {
         // If not logged in, navigate to the Login page
@@ -160,10 +157,10 @@ class _HomePageState extends State<HomePage> {
       }
     } else if (_isLoggedIn && index == 0) {
       // Check if the vendor is logged in and "Нүүр" tab is selected
-      // If the Vendor is logged in, launch the VendorHomePage
+      // If the Vendor is logged in, launch the VendorUserHome
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => VendorHomePage(userId: _userId)),
+        MaterialPageRoute(builder: (context) => UserHome(userId: _userId)),
       );
     }
   });

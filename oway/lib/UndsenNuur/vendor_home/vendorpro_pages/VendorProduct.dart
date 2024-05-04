@@ -46,4 +46,3 @@ class VendorProduct extends StatelessWidget {
     );
   }
 }
-

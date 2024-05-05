@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:oway/UndsenNuur/vendor_home/add_product/VendorAddProduct.dart';
+import 'package:oway/UndsenNuur/vendor_home/vendorpro_pages/VendorProfile.dart';
 
 class VendorHomePage extends StatefulWidget {
   final String userId;
@@ -185,7 +187,19 @@ class _VendorHomePageState extends State<VendorHomePage> {
           onTap: (int index) {
             setState(() {
               _selectedIndex = index;
-              // Handle navigation based on index
+              if (index == 1) {
+                // Navigate to VendorAddProduct page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => VendorAddProduct(userId: widget.userId)),
+                );
+              } else if (index == 2) {
+                // Navigate to VendorProfile page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => VendorProfile(userId: widget.userId)),
+                );
+              }
             });
           },
         ),

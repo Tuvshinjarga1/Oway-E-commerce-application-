@@ -35,10 +35,20 @@ class VendorProduct extends StatelessWidget {
               var document = snapshot.data!.docs[index];
               var data = document.data() as Map<String, dynamic>;
 
-              // Display your data here, for example:
+              // Display your data here
               return ListTile(
-                title: Text(data['Нэр']),
-                subtitle: Text('Price: \$${data['Үнэ']}'),
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(data['Бүтээгдэхүүний зураг']),
+                ),
+                title: Text('Ангилал: ${data['Ангилал']}'),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Бүтээгдэхүүний нэр: ${data['Нэр']}'),
+                    Text('Тоо ширхэг: ${data['Тоо ширхэг']}'),
+                    Text('Үнэ: ${data['Үнэ']}'),
+                  ],
+                ),
               );
             },
             separatorBuilder: (context, index) =>
@@ -50,3 +60,5 @@ class VendorProduct extends StatelessWidget {
     );
   }
 }
+
+

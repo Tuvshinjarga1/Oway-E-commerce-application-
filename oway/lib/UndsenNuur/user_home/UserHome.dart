@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:oway/Register_Login/login.dart';
-import 'package:oway/UndsenNuur/user_home/ProfilePage.dart';
+import 'package:oway/UndsenNuur/user_home/product/ProductDetail.dart';
+import 'package:oway/UndsenNuur/user_home/user_profile/ProfilePage.dart';
 
 class UserHome extends StatefulWidget {
   final String userId;
-  
+
   UserHome({required this.userId});
+
   @override
   _UserHomeState createState() => _UserHomeState();
 }
@@ -78,16 +80,30 @@ class _UserHomeState extends State<UserHome> {
                           scrollDirection: Axis.horizontal,
                           children: snapshot.data!.docs.map((DocumentSnapshot document) {
                             Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-                            return Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Container(
-                                width: 150,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.grey[200],
-                                ),
-                                child: Center(
-                                  child: Text(data['Нэр']),
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ProductDetail(
+                                      productID: data['id'],
+                                      vendorid: data['Vendorid'],
+                                      userid: _userId,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Container(
+                                  width: 150,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.grey[200],
+                                  ),
+                                  child: Center(
+                                    child: Text(data['Нэр']),
+                                  ),
                                 ),
                               ),
                             );
@@ -131,13 +147,27 @@ class _UserHomeState extends State<UserHome> {
                         itemBuilder: (BuildContext context, int index) {
                           DocumentSnapshot document = snapshot.data!.docs[index];
                           Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-                          return Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey[200],
-                            ),
-                            child: Center(
-                              child: Text(data['Нэр']),
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProductDetail(
+                                    productID: data['id'],
+                                    vendorid: data['Vendorid'],
+                                    userid: _userId,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.grey[200],
+                              ),
+                              child: Center(
+                                child: Text(data['Нэр']),
+                              ),
                             ),
                           );
                         },

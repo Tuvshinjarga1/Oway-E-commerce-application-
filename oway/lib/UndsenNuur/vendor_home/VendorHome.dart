@@ -1,13 +1,9 @@
-// Import necessary packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:oway/Register_Login/login.dart';
-import 'package:oway/UndsenNuur/vendor_home/add_product/VendorAddProduct.dart';
-import 'package:oway/UndsenNuur/vendor_home/vendorpro_pages/VendorProfile.dart';
 
 class VendorHomePage extends StatefulWidget {
   final String userId;
-  
+
   VendorHomePage({required this.userId});
 
   @override
@@ -16,28 +12,25 @@ class VendorHomePage extends StatefulWidget {
 
 class _VendorHomePageState extends State<VendorHomePage> {
   int _selectedIndex = 0;
-  bool _isLoggedIn = false;
-  String _userId = "";
   String _userName = "";
-
+  int amjilttai = 0;
+  int tsutslagdsan = 0;
+  int huleegdej = 0;
   @override
   void initState() {
     super.initState();
-    print("pls orood ireech UserID: ${widget.userId}");
-    // Fetch user data when the ProfilePage is initialized
     getUserData(widget.userId);
   }
 
   // Method to fetch user data from Firestore
   Future<void> getUserData(String userId) async {
-    // Retrieve user data from Firestore based on userId
-    // For example:
-    DocumentSnapshot userSnapshot = await FirebaseFirestore.instance.collection('Vendor').doc(userId).get();
+    DocumentSnapshot userSnapshot =
+        await FirebaseFirestore.instance.collection('Vendor').doc(userId).get();
     setState(() {
       _userName = userSnapshot['Нэр'];
-      _userId = userSnapshot['id'];
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -71,64 +64,132 @@ class _VendorHomePageState extends State<VendorHomePage> {
                 fit: BoxFit.cover,
               ),
               SizedBox(height: 20),
-              
               Text("Тавтай морил $_userName"),
-              
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Text(
+                        'Миний борлуулалт',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    DataTable(
+                      columns: [
+                        DataColumn(label: Text('Борлуулалтын Төлөв')),
+                        DataColumn(label: Text('Тоо')),
+                      ],
+                      rows: [
+                        DataRow(cells: [
+                          DataCell(Text('Амжилттай борлуулсан')),
+                          DataCell(StreamBuilder(
+                            stream: FirebaseFirestore.instance.collection('AllowedOrders')
+                            .where('vendorID', isEqualTo: widget.userId)
+                            .snapshots(),
+                            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else {
+                                // Process snapshot data and display statistics
+                                amjilttai = snapshot.data!.docs.length;
+                                return Column(
+                                  children: [
+                                    Text('${snapshot.data!.docs.length}'),
+                                    // Display other statistics similarly
+                                  ],
+                                );
+                              }
+                            },
+                          ),),
+                        ]),
+                        DataRow(cells: [
+                          DataCell(Text('Цуцлагдсан')),
+                          DataCell(StreamBuilder(
+                            stream: FirebaseFirestore.instance.collection('CancelledOrders')
+                            .where('vendorID', isEqualTo: widget.userId)
+                            .snapshots(),
+                            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else {
+                                tsutslagdsan = snapshot.data!.docs.length;
+                                return Column(
+                                  children: [
+                                    Text('${snapshot.data!.docs.length}'),
+                                    // Display other statistics similarly
+                                  ],
+                                );
+                              }
+                            },
+                          ),),
+                        ]),
+                        DataRow(cells: [
+                          DataCell(Text('Хүлээгдэж байгаа')),
+                          DataCell(StreamBuilder(
+                            stream: FirebaseFirestore.instance.collection('Orders')
+                                .where('vendorID', isEqualTo: widget.userId)
+                                .where('status', isEqualTo: 'Pending')
+                                .snapshots(),
+                            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else {
+                                huleegdej = snapshot.data!.docs.length;
+                                return Column(
+                                  children: [
+                                    Text('${snapshot.data!.docs.length}'),
+                                    // Display other statistics similarly
+                                  ],
+                                );
+                              }
+                            },
+                          ),),
+                        ]),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
         bottomNavigationBar: BottomNavigationBar(
-  items: const <BottomNavigationBarItem>[
-    BottomNavigationBarItem(
-      icon: Icon(Icons.home),
-      label: 'Нүүр',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.add),
-      label: 'Бүтээгдэхүүн нэмэх',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.person),
-      label: 'Профайл',
-    ),
-  ],
-  currentIndex: _selectedIndex,
-  selectedItemColor: const Color.fromRGBO(33, 150, 243, 1),
-  onTap: (int index) {
-    setState(() {
-      _selectedIndex = index;
-      if (index == 1) {
-        // Navigate to VendorAddProduct page
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => VendorAddProduct(userId: _userId)),
-        );
-      } else if (index == 2) {
-        // Navigate to VendorProfile page
-        if (_userId.isNotEmpty) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => VendorProfile(userId: _userId)),
-          );
-        } else {
-          // If not logged in, navigate to the Login page
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Login())).then((userId) {
-            // Update isLoggedIn status when the user logs in successfully
-            if (userId != null) {
-              setState(() {
-                _isLoggedIn = true;
-                _userId = userId;
-              });
-            }
-          });
-        }
-      }
-    });
-  },
-),
-
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Нүүр',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add),
+              label: 'Бүтээгдэхүүн нэмэх',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Профайл',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: const Color.fromRGBO(33, 150, 243, 1),
+          onTap: (int index) {
+            setState(() {
+              _selectedIndex = index;
+              // Handle navigation based on index
+            });
+          },
+        ),
       ),
     );
   }
 }
-

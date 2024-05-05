@@ -1,23 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:oway/Register_Login/login.dart';
-import 'package:oway/UndsenNuur/vendor_home/vendorpro_pages/VendorInfo.dart';
-import 'package:oway/UndsenNuur/vendor_home/vendorpro_pages/VendorOrder.dart';
-import 'package:oway/UndsenNuur/vendor_home/vendorpro_pages/VendorProduct.dart';
+import 'package:oway/UndsenNuur/user_home/user_profile/UserOrder.dart';
+import 'package:oway/UndsenNuur/user_home/user_profile/UserOrderHistory.dart';
+import 'package:oway/UndsenNuur/user_home/user_profile/userinfo.dart';
 
-class VendorProfile extends StatefulWidget {
+class ProfilePage extends StatefulWidget {
   final String userId;
 
-  const VendorProfile({Key? key, required this.userId}) : super(key: key);
+  const ProfilePage({Key? key, required this.userId}) : super(key: key);
 
   @override
-  _VendorProfilePageState createState() => _VendorProfilePageState();
+  _ProfilePagePageState createState() => _ProfilePagePageState();
 }
 
-class _VendorProfilePageState extends State<VendorProfile> {
-  String _vendorOvog = "";
-  String _vendorNer = "";
-  String _imageLink = "";
+class _ProfilePagePageState extends State<ProfilePage> {
+  String _userOvog = "";
+  String _userNer = "";
+  String _userPhone = "";
   String _userId = "";
   @override
   void initState() {
@@ -29,12 +29,12 @@ class _VendorProfilePageState extends State<VendorProfile> {
 
   Future<void> getUserData(String userId) async {
     DocumentSnapshot userSnapshot =
-        await FirebaseFirestore.instance.collection('Vendor').doc(userId).get();
+        await FirebaseFirestore.instance.collection('User').doc(userId).get();
     setState(() {
       _userId = userSnapshot['id'];
-      _vendorOvog = userSnapshot['Овог'];
-      _vendorNer = userSnapshot['Нэр'];
-      _imageLink = userSnapshot['Цээж зураг'];
+      _userOvog = userSnapshot['Овог'];
+      _userPhone = userSnapshot['Утас'];
+      _userNer = userSnapshot['Нэр'];
     });
   }
 
@@ -60,33 +60,33 @@ class _VendorProfilePageState extends State<VendorProfile> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Image.asset(
-                  //   'assets/registerpro.png',
-                  //   height: 155,
-                  //   width: 155,
-                  // ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(75), //150 bval tugs dugui bdg
-                    child: Image.network(
-                      '$_imageLink',
-                      height: 100,
-                      width: 100,
-                      fit: BoxFit.cover,
-                    ),
+                  Image.asset(
+                    'assets/registerpro.png',
+                    height: 155,
+                    width: 155,
                   ),
+                  // ClipRRect(
+                  //   borderRadius: BorderRadius.circular(75), //150 bval tugs dugui bdg
+                  //   child: Image.network(
+                  //     '$_imageLink',
+                  //     height: 100,
+                  //     width: 100,
+                  //     fit: BoxFit.cover,
+                  //   ),
+                  // ),
                   SizedBox(width: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 50),
                       Text(
-                        "$_vendorOvog $_vendorNer",
+                        "$_userOvog $_userNer",
                         style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "Зөвшөөрөлтэй нийлүүлэгч",
-                        style: TextStyle(fontSize: 15),
+                        "Утас: $_userPhone",
+                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -96,10 +96,10 @@ class _VendorProfilePageState extends State<VendorProfile> {
               GestureDetector(
                 onTap: () {
                   Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => VendorInfo(userId: _userId)),
-                );
-                  print("Profile button tapped");
+                    context,
+                    MaterialPageRoute(builder: (context) => UserInfo(userId: _userId)),
+                  );
+                  print("Хувийн мэдээлэл button tapped");
                 },
                 child: Row(
                   children: [
@@ -113,16 +113,16 @@ class _VendorProfilePageState extends State<VendorProfile> {
               GestureDetector(
                 onTap: () {
                   Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => VendorProduct(vendorId: _userId)),
-                );
-                  print("Products button tapped");
+                    context,
+                    MaterialPageRoute(builder: (context) => UserOrder(userId: _userId)),
+                  );
+                  print("Миний захиалга button tapped");
                 },
                 child: Row(
                   children: [
                     Icon(Icons.check_box),
                     SizedBox(width: 10),
-                    Text("Миний бүтээгдэхүүн"),
+                    Text("Миний захиалга"),
                   ],
                 ),
               ),
@@ -130,16 +130,16 @@ class _VendorProfilePageState extends State<VendorProfile> {
               GestureDetector(
                 onTap: () {
                   Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => VendorOrder(vendorId: _userId)),
-                );
-                  print("Orders button tapped");
+                    context,
+                    MaterialPageRoute(builder: (context) => UserOrderHistory(userId: _userId)),
+                  );
+                  print("Захиалгын түүх button tapped");
                 },
                 child: Row(
                   children: [
                     Icon(Icons.list),
                     SizedBox(width: 10),
-                    Text("Захиалгын хүсэлт"),
+                    Text("Захиалгын түүх"),
                   ],
                 ),
               ),

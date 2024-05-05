@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class VendorInfo extends StatefulWidget {
+class UserInfo extends StatefulWidget {
   final String userId;
 
-  const VendorInfo({Key? key, required this.userId}) : super(key: key);
+  const UserInfo({Key? key, required this.userId}) : super(key: key);
 
   @override
-  _VendorInfoPageState createState() => _VendorInfoPageState();
+  _UserInfoPageState createState() => _UserInfoPageState();
 }
 
-class _VendorInfoPageState extends State<VendorInfo> {
+class _UserInfoPageState extends State<UserInfo> {
   late Future<DocumentSnapshot> _userDataFuture;
   late Map<String, dynamic> _userData;
   bool _isEditing = false;
@@ -22,14 +22,14 @@ class _VendorInfoPageState extends State<VendorInfo> {
   }
 
   Future<DocumentSnapshot> getUserData(String userId) async {
-    final snapshot = await FirebaseFirestore.instance.collection('Vendor').doc(userId).get();
+    final snapshot = await FirebaseFirestore.instance.collection('User').doc(userId).get();
     _userData = snapshot.data() as Map<String, dynamic>;
     return snapshot;
   }
 
   Future<void> _updateUserData() async {
     try {
-      await FirebaseFirestore.instance.collection('Vendor').doc(widget.userId).update(_userData);
+      await FirebaseFirestore.instance.collection('User').doc(widget.userId).update(_userData);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Амжилттай өөрчлөгдлөө')));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Өөрчлөлт амжилтгүй')));
@@ -71,17 +71,16 @@ class _VendorInfoPageState extends State<VendorInfo> {
                   Center(
                     child: ClipRRect(
                     borderRadius: BorderRadius.circular(75), //150 bval tugs dugui bdg
-                    child: Image.network(
-                      _userData["Цээж зураг"],
-                      height: 100,
-                      width: 100,
-                      fit: BoxFit.cover,
+                    child: Image.asset(
+                    'assets/registerpro.png',
+                    height: 155,
+                    width: 155,
                     ),
                   ),
                   ),
                   SizedBox(height: 10),
                   TextFormField(
-                    initialValue: '${_userData["Овог"]} ${_userData["Нэр"]}',
+                    initialValue: '${_userData["Овог"]}',
                     enabled: _isEditing,
                     onChanged: (value) {
                       // Update the name in the local data
@@ -89,19 +88,19 @@ class _VendorInfoPageState extends State<VendorInfo> {
                         _userData["Овог"] = value;
                       });
                     },
-                    decoration: InputDecoration(labelText: 'Овог, нэр'),
+                    decoration: InputDecoration(labelText: 'Овог'),
                   ),
                   SizedBox(height: 10),
                   TextFormField(
-                    initialValue: _userData["Эрхэлдэг ажил"],
+                    initialValue: '${_userData["Нэр"]}',
                     enabled: _isEditing,
                     onChanged: (value) {
-                      // Update the job title in the local data
+                      // Update the name in the local data
                       setState(() {
-                        _userData["Эрхэлдэг ажил"] = value;
+                        _userData["Нэр"] = value;
                       });
                     },
-                    decoration: InputDecoration(labelText: 'Ажил'),
+                    decoration: InputDecoration(labelText: 'Нэр'),
                   ),
                   SizedBox(height: 10),
                   TextFormField(
@@ -114,30 +113,6 @@ class _VendorInfoPageState extends State<VendorInfo> {
                       });
                     },
                     decoration: InputDecoration(labelText: 'Утас'),
-                  ),
-                  SizedBox(height: 10),
-                  TextFormField(
-                    initialValue: _userData["Гэрийн хаяг"],
-                    enabled: _isEditing,
-                    onChanged: (value) {
-                      // Update the address in the local data
-                      setState(() {
-                        _userData["Гэрийн хаяг"] = value;
-                      });
-                    },
-                    decoration: InputDecoration(labelText: 'Гэрийн хаяг'),
-                  ),
-                  SizedBox(height: 10),
-                  TextFormField(
-                    initialValue: _userData["Дэлгэрэнгүй"],
-                    enabled: _isEditing,
-                    onChanged: (value) {
-                      // Update the detailed description in the local data
-                      setState(() {
-                        _userData["Дэлгэрэнгүй"] = value;
-                      });
-                    },
-                    decoration: InputDecoration(labelText: 'Дэлгэрэнгүй'),
                   ),
                   SizedBox(height: 10),
                 ],

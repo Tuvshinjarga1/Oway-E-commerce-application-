@@ -57,7 +57,7 @@ class _UserHomeState extends State<UserHome> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  'Featured Products',
+                  'Онцлох Бүтээгдэхүүн',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -143,7 +143,7 @@ class _UserHomeState extends State<UserHome> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  'Products',
+                  'Бүтээгдэхүүн',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -277,10 +277,10 @@ class _UserHomeState extends State<UserHome> {
                     MaterialPageRoute(builder: (context) => Login()),
                   );
                 }
-              } else if (_isLoggedIn && index == 1) { // Updated condition for "Ангилал" icon
+              } else if (_userId == _userId && index == 1) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => UserAngilal()), 
+                  MaterialPageRoute(builder: (context) => UserAngilal()),
                 );
               }
             });

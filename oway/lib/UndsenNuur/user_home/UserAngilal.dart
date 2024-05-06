@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:oway/Register_Login/login.dart';
-import 'package:oway/UndsenNuur/home.dart';
-import 'package:oway/UndsenNuur/user_home/user_profile/ProfilePage.dart';
 
 class UserAngilal extends StatefulWidget {
   @override
@@ -112,7 +109,7 @@ class _UserAngilalState extends State<UserAngilal> {
                               ],
                             ),
                             onTap: () {
-                              _showAfterLoginDialog();
+                              //_showAfterLoginDialog();
                             },
                           ),
                         );
@@ -123,47 +120,6 @@ class _UserAngilalState extends State<UserAngilal> {
             ),
           ),
         ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Нүүр',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag),
-            label: 'Ангилал',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Профайл',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: const Color.fromRGBO(33, 150, 243, 1),
-        onTap: (int index) {
-          setState(() {
-            _selectedIndex = index;
-            if (index == 0) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage(userId: "")),
-              );
-            } else if (index == 2) {
-              if (_isLoggedIn) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfilePage(userId: _userId)),
-                );
-              } else {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Login()),
-                );
-              }
-            }
-          });
-        },
       ),
     );
   }

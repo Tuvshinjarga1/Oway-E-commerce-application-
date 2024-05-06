@@ -101,8 +101,32 @@ class _UserHomeState extends State<UserHome> {
                                     borderRadius: BorderRadius.circular(10),
                                     color: Colors.grey[200],
                                   ),
-                                  child: Center(
-                                    child: Text(data['Нэр']),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      // Display product image
+                                      Container(
+                                        width: 100,
+                                        height: 100,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                            image: NetworkImage(data['Бүтээгдэхүүний зураг']), // Assuming 'imageUrl' is the field storing image URLs
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 8),
+                                      // Display product name
+                                      Text(
+                                        data['Нэр'], // Assuming 'Нэр' is the name field
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -113,6 +137,7 @@ class _UserHomeState extends State<UserHome> {
                   }
                 },
               ),
+
               SizedBox(height: 20),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -135,14 +160,8 @@ class _UserHomeState extends State<UserHome> {
                     case ConnectionState.waiting:
                       return CircularProgressIndicator();
                     default:
-                      return GridView.builder(
+                      return ListView.builder(
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                        ),
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (BuildContext context, int index) {
                           DocumentSnapshot document = snapshot.data!.docs[index];
@@ -160,13 +179,60 @@ class _UserHomeState extends State<UserHome> {
                                 ),
                               );
                             },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.grey[200],
+                            child: Card(
+                              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              elevation: 4,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
                               ),
-                              child: Center(
-                                child: Text(data['Нэр']),
+                              child: ListTile(
+                                contentPadding: EdgeInsets.all(10),
+                                leading: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Image.network(
+                                    data['Бүтээгдэхүүний зураг'], // Assuming you have an 'imageUrl' field in your document
+                                    width: 80,
+                                    height: 80,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                title: Text(
+                                  data['Нэр'], // Assuming 'Нэр' is the name field
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: 5),
+                                    Text(
+                                      data['Ангилал'], // Assuming 'category' is the category field
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey[600],
+                                      ),
+                                    ),
+                                    SizedBox(height: 3),
+                                    Text(
+                                      '\Үнэ: ${data['Үнэ']}', // Assuming 'price' is the price field
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green[700],
+                                      ),
+                                    ),
+                                    SizedBox(height: 3),
+                                    Text(
+                                      data['Бэлэн болох'], // Assuming 'availability' is the availability field
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                  ],
+                                ),
                               ),
                             ),
                           );

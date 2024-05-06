@@ -50,7 +50,7 @@ class _VendorAddProductState extends State<VendorAddProduct> {
 
   String? selectedCategory;
   String? selectedSubcategory;
-  List<String> categories = ["Мах 1", "Сүү 2", "Хувцас 3"]; // Example categories
+  List<String> categories = ["Мах махан бүтээгдэхүүн", "Сүүн бүтээгдэхүүн", "Хувцас"]; // Example categories
   List<String> subcategories = ["Subcategory 1", "Subcategory 2", "Subcategory 3"]; // Example subcategories
   String? selectedOption;
   @override

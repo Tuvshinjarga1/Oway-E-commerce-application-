@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:oway/Register_Login/login.dart';
+import 'package:oway/UndsenNuur/user_home/UserAngilal.dart';
 import 'package:oway/UndsenNuur/user_home/product/ProductDetail.dart';
 import 'package:oway/UndsenNuur/user_home/user_profile/ProfilePage.dart';
 
@@ -276,10 +277,10 @@ class _UserHomeState extends State<UserHome> {
                     MaterialPageRoute(builder: (context) => Login()),
                   );
                 }
-              } else if (_isLoggedIn && index == 0) {
+              } else if (_isLoggedIn && index == 1) { // Updated condition for "Ангилал" icon
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => UserHome(userId: _userId)),
+                  MaterialPageRoute(builder: (context) => UserAngilal()), 
                 );
               }
             });

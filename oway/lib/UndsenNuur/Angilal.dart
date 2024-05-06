@@ -167,8 +167,6 @@ class _AngilalState extends State<Angilal> {
       ),
     );
   }
-
-  // Function to show a dialog after login
   void _showAfterLoginDialog() {
     showDialog(
       context: context,

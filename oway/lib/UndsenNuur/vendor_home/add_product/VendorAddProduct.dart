@@ -61,6 +61,8 @@ class _VendorAddProductState extends State<VendorAddProduct> {
       ),
       body: Center(
         child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -242,6 +244,7 @@ class _VendorAddProductState extends State<VendorAddProduct> {
                 child: Text('Бүтээгдэхүүн нэмэх'),
               ),
             ],
+          ),
           ),
         ),
       ),

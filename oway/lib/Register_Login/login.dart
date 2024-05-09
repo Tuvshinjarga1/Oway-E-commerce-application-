@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
 import 'package:flutter/material.dart';
 import 'package:oway/Register_Login/HereglegchBurtgel.dart';
 import 'package:oway/Register_Login/VendorRegister/VendorReg.dart';
-import 'package:oway/UndsenNuur/home.dart';
 import 'package:oway/UndsenNuur/user_home/UserHome.dart';
 import 'package:oway/UndsenNuur/vendor_home/VendorHome.dart';
 
@@ -59,7 +58,8 @@ int selectedOption = 1; // Declare selectedOption as int
           width: 100,
         ),
       ),
-      body: Center(
+      body: SingleChildScrollView(
+      child:Center(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 60),
           child: Column(
@@ -162,6 +162,7 @@ int selectedOption = 1; // Declare selectedOption as int
           ),
         ),
       ),
+    )
     );
   }
 }

@@ -50,20 +50,20 @@ class ProductDetail extends StatelessWidget {
                       children: [
                         Image.network(
                           productImage,
-                          height: 200,
+                          height: 200.00,
                           width: double.infinity,
                           fit: BoxFit.cover,
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 16.0),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(16.0),
                           child: Row(
                             children: [
                               Expanded(
                                 child: Text(
                                   productName,
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 16.0,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -72,7 +72,7 @@ class ProductDetail extends StatelessWidget {
                               Text(
                                 productPrice,
                                 style: TextStyle(
-                                  fontSize: 24,
+                                  fontSize: 16.0,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.cyan, // Text color is cyan
                                 ),
@@ -81,14 +81,14 @@ class ProductDetail extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(16.0),
                           child: Row(
                             children: [
                               Expanded(
                                 child: Text(
                                   angilal,
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -97,7 +97,7 @@ class ProductDetail extends StatelessWidget {
                               Text(
                                 belen_eseh,
                                 style: TextStyle(
-                                  fontSize: 24,
+                                  fontSize: 16.0,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -105,7 +105,7 @@ class ProductDetail extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(16.0),
                           child: Text(
                             'Нэмэлт тайлбар: $productDescription',
                             style: TextStyle(
@@ -114,7 +114,7 @@ class ProductDetail extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(16.0),
                           child: Text(
                             'Хэмжээ: $too_shirheg',
                             style: TextStyle(
@@ -123,7 +123,7 @@ class ProductDetail extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(16.0),
                           child: Text(
                             'Тоо ширхэг: $too_shirheg',
                             style: TextStyle(
@@ -131,7 +131,7 @@ class ProductDetail extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 16.0),
                       ],
                     );
                   } else {
@@ -144,11 +144,11 @@ class ProductDetail extends StatelessWidget {
             ),
             Divider(),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(16.0),
               child: Text(
                 'Нийлүүлэгчийн тухай',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 16.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -173,16 +173,19 @@ class ProductDetail extends StatelessWidget {
                       var vendorData = snapshot.data!;
                       var vendorImageUrl = vendorData['Цээж зураг'];
                       return Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(16.0),
                         child: Row(
                           children: [
-                            Image.network(
+                            ClipRRect(
+                            borderRadius: BorderRadius.circular(75), //150 bval tugs dugui bdg
+                            child: Image.network(
                               vendorImageUrl,
                               height: 100,
                               width: 100,
                               fit: BoxFit.cover,
                             ),
-                            SizedBox(height: 8),
+                          ),
+                            SizedBox(height: 8, width: 8,),
                             Text(
                               '${vendorData['Овог']} ${vendorData['Нэр']}\n${vendorData['Гэрийн хаяг']}',
                               style: TextStyle(
@@ -201,13 +204,13 @@ class ProductDetail extends StatelessWidget {
                 },
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 16.0),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(16.0),
               child: TextFormField(
                 controller: quantityController, // Assign controller to the TextFormField
                 decoration: InputDecoration(
-                  labelText: 'Quantity',
+                  labelText: 'Тоо ширхэг (хэмжээ)',
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
@@ -215,7 +218,7 @@ class ProductDetail extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 onPressed: () async {
                   var quantity = int.tryParse(quantityController.text) ?? 0;
@@ -246,19 +249,24 @@ class ProductDetail extends StatelessWidget {
                     );
                   }
                 },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.cyan),
+                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  fixedSize: MaterialStateProperty.all<Size>(Size.fromHeight(50)),
+                ),
                 child: Text('Захиалах'),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 16.0),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: Icon(Icons.arrow_back),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.pop(context);
+      //   },
+      //   child: Icon(Icons.arrow_back),
+      // ),
     );
   }
 }

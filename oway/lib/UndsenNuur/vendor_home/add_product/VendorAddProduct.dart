@@ -22,7 +22,6 @@ class _VendorAddProductState extends State<VendorAddProduct> {
   void initState() {
     super.initState();
     print("pls orood ireech UserID: ${widget.userId}");
-    // Fetch user data when the ProfilePage is initialized
     getUserData(widget.userId);
   }
     Future<void> getUserData(String userId) async {

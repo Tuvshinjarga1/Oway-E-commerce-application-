@@ -21,7 +21,10 @@ class _NiiluulegchPageState extends State<Niiluulegch> {
   }
 
   Future<DocumentSnapshot> getUserData(String vendorID) async {
-    final snapshot = await FirebaseFirestore.instance.collection('Vendor').doc(vendorID).get();
+    final snapshot = await FirebaseFirestore.instance
+        .collection('Vendor')
+        .doc(vendorID)
+        .get();
     _userData = snapshot.data() as Map<String, dynamic>;
     return snapshot;
   }
@@ -43,51 +46,63 @@ class _NiiluulegchPageState extends State<Niiluulegch> {
             return Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
+                // Wrap with Column
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
                     child: ClipRRect(
-                    borderRadius: BorderRadius.circular(75), //150 bval tugs dugui bdg
-                    child: Image.network(
-                      _userData["Цээж зураг"],
-                      height: 100,
-                      width: 100,
-                      fit: BoxFit.cover,
+                      borderRadius: BorderRadius.circular(75),
+                      child: Image.network(
+                        _userData["Цээж зураг"],
+                        height: 100,
+                        width: 100,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
+                  SizedBox(height: 20),
+                  Container(
+                    width: 400, // Set desired width
+                    height: 250, // Set desired height
+                    child: Card(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 10),
+                          Text(
+                            'Овог: ${_userData["Овог"]}',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'Нэр: ${_userData["Нэр"]}',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'Эрхэлдэг ажил: ${_userData["Эрхэлдэг ажил"]}',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'Утас: ${_userData["Утас"]}',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'Гэрийн хаяг: ${_userData["Гэрийн хаяг"]}',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'Дэлгэрэнгүй: ${_userData["Дэлгэрэнгүй"]}',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          SizedBox(height: 10),
+                        ],
+                      ),
+                    ),
                   ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Овог: ${_userData["Овог"]}',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(height: 10),
-                  SizedBox(height: 10),
-                  Text(
-                    'Нэр: ${_userData["Нэр"]}',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Эрхэлдэг ажил: ${_userData["Эрхэлдэг ажил"]}',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Утас: ${_userData["Утас"]}',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Гэрийн хаяг: ${_userData["Гэрийн хаяг"]}',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Дэлгэрэнгүй: ${_userData["Дэлгэрэнгүй"]}',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(height: 10),
                 ],
               ),
             );

@@ -66,8 +66,12 @@ class _UserHomeState extends State<UserHome> {
               ),
               SizedBox(height: 10),
               StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection('VendorProduct').where('Онцлох', isEqualTo: true).snapshots(),
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                stream: FirebaseFirestore.instance
+                    .collection('VendorProduct')
+                    .where('Онцлох', isEqualTo: true)
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   }
@@ -79,8 +83,10 @@ class _UserHomeState extends State<UserHome> {
                         height: 200,
                         child: ListView(
                           scrollDirection: Axis.horizontal,
-                          children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                            Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                          children: snapshot.data!.docs
+                              .map((DocumentSnapshot document) {
+                            Map<String, dynamic> data =
+                                document.data() as Map<String, dynamic>;
                             return GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -100,7 +106,11 @@ class _UserHomeState extends State<UserHome> {
                                   width: 150,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: Colors.grey[200],
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.blue, blurRadius: 5.0)
+                                    ], // Wrap in a list
                                   ),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -110,9 +120,11 @@ class _UserHomeState extends State<UserHome> {
                                         width: 100,
                                         height: 100,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                           image: DecorationImage(
-                                            image: NetworkImage(data['Бүтээгдэхүүний зураг']), // Assuming 'imageUrl' is the field storing image URLs
+                                            image: NetworkImage(data[
+                                                'Бүтээгдэхүүний зураг']), // Assuming 'imageUrl' is the field storing image URLs
                                             fit: BoxFit.cover,
                                           ),
                                         ),
@@ -120,7 +132,8 @@ class _UserHomeState extends State<UserHome> {
                                       SizedBox(height: 8),
                                       // Display product name
                                       Text(
-                                        data['Нэр'], // Assuming 'Нэр' is the name field
+                                        data[
+                                            'Нэр'], // Assuming 'Нэр' is the name field
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontSize: 16,
@@ -138,7 +151,6 @@ class _UserHomeState extends State<UserHome> {
                   }
                 },
               ),
-
               SizedBox(height: 20),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -152,8 +164,11 @@ class _UserHomeState extends State<UserHome> {
               ),
               SizedBox(height: 10),
               StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection('VendorProduct').snapshots(),
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                stream: FirebaseFirestore.instance
+                    .collection('VendorProduct')
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   }
@@ -165,8 +180,10 @@ class _UserHomeState extends State<UserHome> {
                         shrinkWrap: true,
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (BuildContext context, int index) {
-                          DocumentSnapshot document = snapshot.data!.docs[index];
-                          Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                          DocumentSnapshot document =
+                              snapshot.data!.docs[index];
+                          Map<String, dynamic> data =
+                              document.data() as Map<String, dynamic>;
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -181,58 +198,68 @@ class _UserHomeState extends State<UserHome> {
                               );
                             },
                             child: Card(
-                              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
                               elevation: 4,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15.0),
+                                side: BorderSide(color: Colors.black, width: 1),
                               ),
-                              child: ListTile(
-                                contentPadding: EdgeInsets.all(10),
-                                leading: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Image.network(
-                                    data['Бүтээгдэхүүний зураг'], // Assuming you have an 'imageUrl' field in your document
-                                    width: 80,
-                                    height: 80,
-                                    fit: BoxFit.cover,
-                                  ),
+                              color: Colors.white, // Set white background color
+                              shadowColor: Colors.grey, // Set shadow color
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15.0),
                                 ),
-                                title: Text(
-                                  data['Нэр'], // Assuming 'Нэр' is the name field
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.all(10),
+                                  leading: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    child: Image.network(
+                                      data['Бүтээгдэхүүний зураг'],
+                                      width: 80,
+                                      height: 80,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                ),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(height: 5),
-                                    Text(
-                                      data['Ангилал'], // Assuming 'category' is the category field
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey[600],
-                                      ),
+                                  title: Text(
+                                    data['Нэр'],
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
                                     ),
-                                    SizedBox(height: 3),
-                                    Text(
-                                      '\Үнэ: ${data['Үнэ']}', // Assuming 'price' is the price field
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.green[700],
+                                  ),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(height: 5),
+                                      Text(
+                                        data['Ангилал'],
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[600],
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(height: 3),
-                                    Text(
-                                      data['Бэлэн болох'], // Assuming 'availability' is the availability field
-                                      style: TextStyle(
-                                        fontSize: 14,
+                                      SizedBox(height: 3),
+                                      Text(
+                                        '\Үнэ: ${data['Үнэ']}',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.green[700],
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(height: 5),
-                                  ],
+                                      SizedBox(height: 3),
+                                      Text(
+                                        data['Бэлэн болох'],
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      SizedBox(height: 5),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -269,7 +296,8 @@ class _UserHomeState extends State<UserHome> {
                 if (_userId == _userId) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ProfilePage(userId: _userId)),
+                    MaterialPageRoute(
+                        builder: (context) => ProfilePage(userId: _userId)),
                   );
                 } else {
                   Navigator.push(

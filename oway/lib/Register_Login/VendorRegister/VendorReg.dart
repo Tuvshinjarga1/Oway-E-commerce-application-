@@ -29,11 +29,12 @@ class _NiiluulegchRegisterState extends State<NiiluulegchRegister> {
   final TextEditingController ner = TextEditingController();
 //  final TextEditingController mergejil = TextEditingController();
   final TextEditingController registr = TextEditingController();
-  final TextEditingController utasnii_dugaar =TextEditingController();
-  final TextEditingController password =TextEditingController();
-  final TextEditingController password_confirm =TextEditingController();
-  final TextEditingController hayg_delgerengui =TextEditingController();
-  final TextEditingController image_path =TextEditingController(); //eniig ghdee sn sudalnaa
+  final TextEditingController utasnii_dugaar = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  final TextEditingController password_confirm = TextEditingController();
+  final TextEditingController hayg_delgerengui = TextEditingController();
+  final TextEditingController image_path =
+      TextEditingController(); //eniig ghdee sn sudalnaa
   final firebase_auth.FirebaseAuth _auth = firebase_auth.FirebaseAuth.instance;
 
   var nerHayg;
@@ -50,29 +51,58 @@ class _NiiluulegchRegisterState extends State<NiiluulegchRegister> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextFormField(
-                controller: ovog,
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(
-                  labelText: "Овог",
-                  border: OutlineInputBorder(),
+              Container(
+                margin: EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                      10.0), // Adjust the radius as needed
+                  border: Border.all(
+                    color: Colors.grey, // Border color
+                    width: 1.0, // Border width
+                  ),
+                ),
+                child: TextFormField(
+                  controller: ovog,
+                  keyboardType: TextInputType.name,
+                  decoration: InputDecoration(
+                    labelText: "Овог",
+                    border: InputBorder.none, // Remove the default border
+                    contentPadding: EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 12.0), // Adjust padding as needed
+                  ),
                 ),
               ),
-              SizedBox(height: 10,),
-              TextFormField(
-                controller: ner,
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(
-                  labelText: "Нэр",
-                  border: OutlineInputBorder(),
+              // SizedBox(
+              //   height: 0,
+              // ),
+              Container(
+                margin: EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                      10.0), // Adjust the radius as needed
+                  border: Border.all(
+                    color: Colors.grey, // Border color
+                    width: 1.0, // Border width
+                  ),
+                ),
+                child: TextFormField(
+                  controller: ner,
+                  keyboardType: TextInputType.name,
+                  decoration: InputDecoration(
+                    labelText: "Нэр",
+                    border: InputBorder.none, // Remove the default border
+                    contentPadding: EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 12.0), // Adjust padding as needed
+                  ),
                 ),
               ),
-
-
-
-              SizedBox(height: 10.0),
+              // SizedBox(height: 10.0),
               StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection('NiiluulegchType').snapshots(),
+                stream: FirebaseFirestore.instance
+                    .collection('NiiluulegchType')
+                    .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return CircularProgressIndicator();
@@ -100,223 +130,300 @@ class _NiiluulegchRegisterState extends State<NiiluulegchRegister> {
                       print('Selected mergejil: $mergejil');
                     },
                     value: mergejil,
-                    hint: mergejil != null ? Text(mergejil!) : Text('Select Item'),
+                    hint: mergejil != null
+                        ? Text(mergejil!)
+                        : Text('Ямар хөдөлмөр эрхэлдэг вэ?'),
                   );
                 },
               ),
-
-            Text('Ажил: $mergejil'),
-
-
-
-              SizedBox(height: 10,),
-              TextFormField(
-                controller: registr,
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(
-                  labelText: "Регистр",
-                  border: OutlineInputBorder(),
+              // SizedBox(
+              //   height: 10,
+              // ),
+              Container(
+                margin: EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                      10.0), // Adjust the radius as needed
+                  border: Border.all(
+                    color: Colors.grey, // Border color
+                    width: 1.0, // Border width
+                  ),
+                ),
+                child: TextFormField(
+                  controller: registr,
+                  keyboardType: TextInputType.name,
+                  decoration: InputDecoration(
+                    labelText: "Регистр",
+                    border: InputBorder.none, // Remove the default border
+                    contentPadding: EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 12.0), // Adjust padding as needed
+                  ),
                 ),
               ),
-              SizedBox(height: 10,),
-              TextFormField(
-                controller: utasnii_dugaar,
-                keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                  labelText: "Утасны дугаар",
-                  border: OutlineInputBorder(),
+              // SizedBox(
+              //   height: 10,
+              // ),
+              Container(
+                margin: EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                      10.0), // Adjust the radius as needed
+                  border: Border.all(
+                    color: Colors.grey, // Border color
+                    width: 1.0, // Border width
+                  ),
+                ),
+                child: TextFormField(
+                  controller: utasnii_dugaar,
+                  keyboardType: TextInputType.phone,
+                  decoration: InputDecoration(
+                    labelText: "Утасны дугаар",
+                    border: InputBorder.none, // Remove the default border
+                    contentPadding: EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 12.0), // Adjust padding as needed
+                  ),
                 ),
               ),
-              SizedBox(height: 10,),
-              TextFormField(
-                controller: password,
-                keyboardType: TextInputType.visiblePassword,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: "Нууц үг",
-                  border: OutlineInputBorder(),
+              // SizedBox(
+              //   height: 10,
+              // ),
+              Container(
+                margin: EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                      10.0), // Adjust the radius as needed
+                  border: Border.all(
+                    color: Colors.grey, // Border color
+                    width: 1.0, // Border width
+                  ),
+                ),
+                child: TextFormField(
+                  controller: password,
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: "Нууц үг",
+                    border: InputBorder.none, // Remove the default border
+                    contentPadding: EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 12.0), // Adjust padding as needed
+                  ),
                 ),
               ),
-              SizedBox(height: 10,),
-              TextFormField(
-                controller: password_confirm,
-                keyboardType: TextInputType.visiblePassword,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: "Нууц үг дахин оруулна уу.",
-                  border: OutlineInputBorder(),
+              // SizedBox(
+              //   height: 10,
+              // ),
+              Container(
+                margin: EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                      10.0), // Adjust the radius as needed
+                  border: Border.all(
+                    color: Colors.grey, // Border color
+                    width: 1.0, // Border width
+                  ),
+                ),
+                child: TextFormField(
+                  controller: password_confirm,
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: "Нууц үг дахин оруулна уу.",
+                    border: InputBorder.none, // Remove the default border
+                    contentPadding: EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 12.0), // Adjust padding as needed
+                  ),
                 ),
               ),
-
-
-
               StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection("AimagHot").snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text("Some error occurred ${snapshot.error}"),
-                );
-              }
+                stream: FirebaseFirestore.instance
+                    .collection("AimagHot")
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text("Some error occurred ${snapshot.error}"),
+                    );
+                  }
 
-              List<DropdownMenuItem<String>> programItems1 = [];
-              
-              if (!snapshot.hasData) {
-                return const CircularProgressIndicator();
-              } else {
-                final selectProgram = snapshot.data?.docs.reversed.toList();
-                if (selectProgram != null) {
-                  for (var program in selectProgram) {
-                    nerHayg = program['ner'];
-                    programItems1.add(
-                      DropdownMenuItem<String>(
-                        value: program.id,
-                        child: Text(
-                          nerHayg,
+                  List<DropdownMenuItem<String>> programItems1 = [];
+
+                  if (!snapshot.hasData) {
+                    return const CircularProgressIndicator();
+                  } else {
+                    final selectProgram = snapshot.data?.docs.reversed.toList();
+                    if (selectProgram != null) {
+                      for (var program in selectProgram) {
+                        nerHayg = program['ner'];
+                        programItems1.add(
+                          DropdownMenuItem<String>(
+                            value: program.id,
+                            child: Text(
+                              nerHayg,
+                            ),
+                          ),
+                        );
+                      }
+                    }
+
+                    return Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                        padding: const EdgeInsets.only(right: 15, left: 15),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey, width: 1),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Column(
+                          children: [
+                            DropdownButton<String>(
+                              value: selectedValue1,
+                              onChanged: (String? value) {
+                                setState(() {
+                                  selectedValue1 = value;
+                                  selectedValue2 = null;
+                                  selectedValue3 = null;
+                                });
+                              },
+                              underline: const SizedBox(),
+                              isExpanded: true,
+                              hint: const Text(
+                                "Аймаг/Хот",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              items: programItems1,
+                            ),
+                            if (selectedValue1 != null)
+                              FutureBuilder<QuerySnapshot>(
+                                future: FirebaseFirestore.instance
+                                    .collection("AimagHot")
+                                    .doc(selectedValue1)
+                                    .collection("Duureg")
+                                    .get(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return CircularProgressIndicator();
+                                  }
+                                  if (snapshot.hasError) {
+                                    return Text(
+                                        "Error fetching subcollection: ${snapshot.error}");
+                                  }
+                                  List<DropdownMenuItem<String>> programItems2 =
+                                      [];
+                                  snapshot.data?.docs.forEach((doc) {
+                                    nerHayg1 = doc['ner'];
+                                    programItems2.add(
+                                      DropdownMenuItem<String>(
+                                        value: doc.id,
+                                        child: Text(
+                                          nerHayg1,
+                                        ),
+                                      ),
+                                    );
+                                  });
+                                  return DropdownButton<String>(
+                                    underline: SizedBox(),
+                                    isExpanded: true,
+                                    hint: const Text(
+                                      "Сум/Дүүрэг",
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    value: selectedValue2,
+                                    items: programItems2,
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        selectedValue2 = value;
+                                        selectedValue3 = null;
+                                      });
+                                    },
+                                  );
+                                },
+                              ),
+                            if (selectedValue2 != null)
+                              FutureBuilder<QuerySnapshot>(
+                                future: FirebaseFirestore.instance
+                                    .collection("AimagHot")
+                                    .doc(selectedValue1)
+                                    .collection("Duureg")
+                                    .doc(selectedValue2)
+                                    .collection("Horoo")
+                                    .get(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return CircularProgressIndicator();
+                                  }
+                                  if (snapshot.hasError) {
+                                    return Text(
+                                        "Error fetching subcollection: ${snapshot.error}");
+                                  }
+                                  List<DropdownMenuItem<String>> programItems3 =
+                                      [];
+                                  snapshot.data?.docs.forEach((doc) {
+                                    nerHayg2 = doc['ner'];
+                                    programItems3.add(
+                                      DropdownMenuItem<String>(
+                                        value: doc.id,
+                                        child: Text(
+                                          nerHayg2,
+                                        ),
+                                      ),
+                                    );
+                                  });
+                                  return DropdownButton<String>(
+                                    underline: SizedBox(),
+                                    isExpanded: true,
+                                    hint: const Text(
+                                      "Баг/Хороо",
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    value: selectedValue3,
+                                    items: programItems3,
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        selectedValue3 = value;
+                                      });
+                                    },
+                                  );
+                                },
+                              ),
+                          ],
                         ),
                       ),
                     );
                   }
-                }
-
-                return Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    padding: const EdgeInsets.only(right: 15, left: 15),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 1),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      children: [
-                        DropdownButton<String>(
-                          value: selectedValue1,
-                          onChanged: (String? value) {
-                            setState(() {
-                              selectedValue1 = value;
-                              selectedValue2 = null;
-                              selectedValue3 = null;
-                            });
-                          },
-                          underline: const SizedBox(),
-                          isExpanded: true,
-                          hint: const Text(
-                            "Аймаг/Хот",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          items: programItems1,
-                        ),
-
-                        if (selectedValue1 != null)
-                          FutureBuilder<QuerySnapshot>(
-                            future: FirebaseFirestore.instance
-                                .collection("AimagHot")
-                                .doc(selectedValue1)
-                                .collection("Duureg")
-                                .get(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return CircularProgressIndicator();
-                              }
-                              if (snapshot.hasError) {
-                                return Text("Error fetching subcollection: ${snapshot.error}");
-                              }
-                              List<DropdownMenuItem<String>> programItems2 = [];
-                              snapshot.data?.docs.forEach((doc) {
-                                nerHayg1 = doc['ner'];
-                                programItems2.add(
-                                  DropdownMenuItem<String>(
-                                    value: doc.id,
-                                    child: Text(
-                                      nerHayg1,
-                                    ),
-                                  ),
-                                );
-                              });
-                              return DropdownButton<String>(
-                                underline: SizedBox(),
-                                isExpanded: true,
-                                hint: const Text(
-                                  "Сум/Дүүрэг",
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                                value: selectedValue2,
-                                items: programItems2,
-                                onChanged: (String? value) {
-                                  setState(() {
-                                    selectedValue2 = value;
-                                    selectedValue3 = null;
-                                  });
-                                },
-                              );
-                            },
-                          ),
-                        if (selectedValue2 != null)
-                          FutureBuilder<QuerySnapshot>(
-                            future: FirebaseFirestore.instance
-                                .collection("AimagHot")
-                                .doc(selectedValue1)
-                                .collection("Duureg")
-                                .doc(selectedValue2)
-                                .collection("Horoo")
-                                .get(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return CircularProgressIndicator();
-                              }
-                              if (snapshot.hasError) {
-                                return Text("Error fetching subcollection: ${snapshot.error}");
-                              }
-                              List<DropdownMenuItem<String>> programItems3 = [];
-                              snapshot.data?.docs.forEach((doc) {
-                                nerHayg2 = doc['ner'];
-                                programItems3.add(
-                                  DropdownMenuItem<String>(
-                                    value: doc.id,
-                                    child: Text(
-                                      nerHayg2,
-                                    ),
-                                  ),
-                                );
-                              });
-                              return DropdownButton<String>(
-                                underline: SizedBox(),
-                                isExpanded: true,
-                                hint: const Text(
-                                  "Баг/Хороо",
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                                value: selectedValue3,
-                                items: programItems3,
-                                onChanged: (String? value) {
-                                  setState(() {
-                                    selectedValue3 = value;
-                                  });
-                                },
-                              );
-                            },
-                          ),
-                        if (selectedValue3 != null)
-                          Text("You selected: $selectedValue3"),
-                      ],
-                    ),
+                },
+              ),
+              // SizedBox(
+              //   height: 10,
+              // ),
+              Container(
+                margin: EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                      10.0), // Adjust the radius as needed
+                  border: Border.all(
+                    color: Colors.grey, // Border color
+                    width: 1.0, // Border width
                   ),
-                );
-              }
-            },
-          ),
-
-
-              SizedBox(height: 10,),
-              TextFormField(
-                controller: hayg_delgerengui,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  labelText: "Хаягийн дэлгэрэнгүй",
-                  border: OutlineInputBorder(),
+                ),
+                child: TextFormField(
+                  controller: hayg_delgerengui,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    labelText: "Хаягийн дэлгэрэнгүй",
+                    border: InputBorder.none, // Remove the default border
+                    contentPadding: EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 12.0), // Adjust padding as needed
+                  ),
                 ),
               ),
-              SizedBox(height: 16.0),
+              SizedBox(height: 8.0),
               ElevatedButton(
                 onPressed: () async {
                   getImage(ImageSource.gallery); // Open gallery to select image
@@ -325,49 +432,62 @@ class _NiiluulegchRegisterState extends State<NiiluulegchRegister> {
               ),
               SizedBox(height: 16.0),
               ElevatedButton(
+                child: Text(
+                  "Бүртгүүлэх",
+                  style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+                ),
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.cyan),
+                  foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white),
+                  fixedSize:
+                      MaterialStateProperty.all<Size>(Size.fromHeight(50)),
+                ),
                 onPressed: () async {
                   //print('Mergejil orj irmeerenshu $mergejil');
                   //print("Aimag hot shuu ho: "+nerHayg);
                   //print("sum duureg shuu ho: "+nerHayg1);
                   //print("bag horoo shuu ho: "+nerHayg2);
-                  if (password.text == password_confirm.text){
-                  final surname = ovog.text;
-                  final name = ner.text;
-                  final work = mergejil;
-                  final registerNumber = registr.text;
-                  final phone = utasnii_dugaar.text;
-                  final password = password_confirm.text;
-                  final hayg = (nerHayg+"-"+nerHayg1+"-"+nerHayg2);
-                  final delgerengui = hayg_delgerengui.text;
-                  final orshinSuugaa = hayg_delgerengui.text; //turdee ingd tavichy, alban ysnii hayg avah tul bjig
-                  final tseejZurag = await uploadFile((downloadURL) {
+                  if (password.text == password_confirm.text) {
+                    final surname = ovog.text;
+                    final name = ner.text;
+                    final work = mergejil;
+                    final registerNumber = registr.text;
+                    final phone = utasnii_dugaar.text;
+                    final password = password_confirm.text;
+                    final hayg = (nerHayg + "-" + nerHayg1 + "-" + nerHayg2);
+                    final delgerengui = hayg_delgerengui.text;
+                    final orshinSuugaa = hayg_delgerengui
+                        .text; //turdee ingd tavichy, alban ysnii hayg avah tul bjig
+                    final tseejZurag = await uploadFile((downloadURL) {
                       print("Download URL tseejZurgan dotor: $downloadURL");
                     });
-                  createVendor(
-                    surname: surname,
-                    name: name,
-                    work: work.toString(),
-                    registerNumber: registerNumber,
-                    phone: phone,
-                    password: password,
-                    hayg: hayg,
-                    delgerengui: delgerengui,
-                    orshinSuugaa: orshinSuugaa,
-                    tseejZurag: tseejZurag.toString(),
+                    createVendor(
+                      surname: surname,
+                      name: name,
+                      work: work.toString(),
+                      registerNumber: registerNumber,
+                      phone: phone,
+                      password: password,
+                      hayg: hayg,
+                      delgerengui: delgerengui,
+                      orshinSuugaa: orshinSuugaa,
+                      tseejZurag: tseejZurag.toString(),
                     );
                     openBottomSheet();
-                  print("Амжилттай бүртгэгдлээ");
-                  ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(phone+' дугаартай хэрэглэгч амжилттай бүртгэгдлээ.')),
-                  );
-                  }
-                  else{
+                    print("Амжилттай бүртгэгдлээ");
                     ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Password таарахгүй байна.')),
-                  );
+                      SnackBar(
+                          content: Text(phone +
+                              ' дугаартай хэрэглэгч амжилттай бүртгэгдлээ.')),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Password таарахгүй байна.')),
+                    );
                   }
                 },
-                child: Text('Бүртгүүлэх'),
               ),
             ],
           ),
@@ -449,27 +569,28 @@ class _NiiluulegchRegisterState extends State<NiiluulegchRegister> {
   }
 
   Future<String?> uploadFile(void Function(String) onUploadComplete) async {
-  if (myImage == null) {
-    print("No image selected for upload.");
-    return null;
-  }
+    if (myImage == null) {
+      print("No image selected for upload.");
+      return null;
+    }
 
-  final file = myImage!;
-  final metaData = SettableMetadata(contentType: 'image/jpeg');
-  final storageRef = FirebaseStorage.instance.ref();
-  Reference ref = storageRef.child('pictures/${DateTime.now().microsecondsSinceEpoch}.jpg');
-  final uploadTask = ref.putFile(file, metaData);
+    final file = myImage!;
+    final metaData = SettableMetadata(contentType: 'image/jpeg');
+    final storageRef = FirebaseStorage.instance.ref();
+    Reference ref = storageRef
+        .child('pictures/${DateTime.now().microsecondsSinceEpoch}.jpg');
+    final uploadTask = ref.putFile(file, metaData);
 
-  try {
-    await uploadTask;
-    final downloadURL = await ref.getDownloadURL();
-    onUploadComplete(downloadURL);
-    return downloadURL;
-  } catch (error) {
-    print("Upload failed with error: $error");
-    return null;
+    try {
+      await uploadTask;
+      final downloadURL = await ref.getDownloadURL();
+      onUploadComplete(downloadURL);
+      return downloadURL;
+    } catch (error) {
+      print("Upload failed with error: $error");
+      return null;
+    }
   }
-}
 
   // void onUploadComplete(String downloadURL) {
   //   print("File uploaded successfully. Download URL: $downloadURL");
@@ -480,29 +601,34 @@ class _NiiluulegchRegisterState extends State<NiiluulegchRegister> {
     print("$downloadURL");
     // ene ajillaj bga
   }
-Future createVendor({
-  required String surname,
-  required String name,
-  required String work,
-  required String registerNumber,
-  required String phone,
-  required String password,
-  required String hayg,
-  required String delgerengui,
-  required String orshinSuugaa,
-  required String tseejZurag,
-}) async {
-  try {
-    final firebase_auth.UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-      email: utasnii_dugaar.text.trim() + "@gmail.com",
-      password: password.trim(),
-    );
 
-    // Get the document reference for the new user
-    final docUser = FirebaseFirestore.instance.collection('Vendor').doc(userCredential.user!.uid);
+  Future createVendor({
+    required String surname,
+    required String name,
+    required String work,
+    required String registerNumber,
+    required String phone,
+    required String password,
+    required String hayg,
+    required String delgerengui,
+    required String orshinSuugaa,
+    required String tseejZurag,
+  }) async {
+    try {
+      final firebase_auth.UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: utasnii_dugaar.text.trim() + "@gmail.com",
+        password: password.trim(),
+      );
 
-    final local_vendor.Vendor user = local_vendor.Vendor(
-      id: userCredential.user!.uid, // Assign the user's credential ID as the document ID
+      // Get the document reference for the new user
+      final docUser = FirebaseFirestore.instance
+          .collection('Vendor')
+          .doc(userCredential.user!.uid);
+
+      final local_vendor.Vendor user = local_vendor.Vendor(
+        id: userCredential
+            .user!.uid, // Assign the user's credential ID as the document ID
         surname: surname,
         name: name,
         work: work,
@@ -513,16 +639,17 @@ Future createVendor({
         delgerengui: delgerengui,
         orshinSuugaa: orshinSuugaa,
         tseejZurag: tseejZurag,
-    );
-    final json = user.toJson();
+      );
+      final json = user.toJson();
 
-    await docUser.set(json);
-    
-    print("User successfully created and registered: ${userCredential.user!.uid}");
-  } catch (e) {
-    print("Error creating user: $e");
+      await docUser.set(json);
+
+      print(
+          "User successfully created and registered: ${userCredential.user!.uid}");
+    } catch (e) {
+      print("Error creating user: $e");
+    }
   }
-}
 }
 
 //ene ih heregtei ed

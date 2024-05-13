@@ -14,7 +14,8 @@ class ProductDetail extends StatelessWidget {
   });
 
   String _userId = '';
-  final TextEditingController quantityController = TextEditingController(); // Define TextEditingController
+  final TextEditingController quantityController =
+      TextEditingController(); // Define TextEditingController
   var productName;
   var productImage;
 
@@ -30,7 +31,10 @@ class ProductDetail extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             FutureBuilder<DocumentSnapshot>(
-              future: FirebaseFirestore.instance.collection('VendorProduct').doc(productID).get(),
+              future: FirebaseFirestore.instance
+                  .collection('VendorProduct')
+                  .doc(productID)
+                  .get(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasError) {
@@ -56,23 +60,25 @@ class ProductDetail extends StatelessWidget {
                         ),
                         SizedBox(height: 16.0),
                         Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Row(
                             children: [
                               Expanded(
                                 child: Text(
                                   productName,
                                   style: TextStyle(
-                                    fontSize: 16.0,
+                                    fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 8), // Adding space between name and price
+                              SizedBox(
+                                  width:
+                                      8), // Adding space between name and price
                               Text(
                                 productPrice,
                                 style: TextStyle(
-                                  fontSize: 16.0,
+                                  fontSize: 20.0,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.cyan, // Text color is cyan
                                 ),
@@ -81,31 +87,35 @@ class ProductDetail extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Row(
                             children: [
                               Expanded(
                                 child: Text(
                                   angilal,
                                   style: TextStyle(
-                                    fontSize: 18,
+                                    color: Colors.grey[600],
+                                    fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 8), // Adding space between category and belen_eseh
+                              SizedBox(
+                                  width:
+                                      8), // Adding space between category and belen_eseh
                               Text(
                                 belen_eseh,
                                 style: TextStyle(
-                                  fontSize: 16.0,
+                                  fontSize: 20.0,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ],
                           ),
                         ),
+                        SizedBox(height: 30),
                         Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Text(
                             'Нэмэлт тайлбар: $productDescription',
                             style: TextStyle(
@@ -114,7 +124,7 @@ class ProductDetail extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Text(
                             'Хэмжээ: $too_shirheg',
                             style: TextStyle(
@@ -123,7 +133,7 @@ class ProductDetail extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Text(
                             'Тоо ширхэг: $too_shirheg',
                             style: TextStyle(
@@ -144,7 +154,7 @@ class ProductDetail extends StatelessWidget {
             ),
             Divider(),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
                 'Нийлүүлэгчийн тухай',
                 style: TextStyle(
@@ -163,7 +173,10 @@ class ProductDetail extends StatelessWidget {
                 );
               },
               child: FutureBuilder<DocumentSnapshot>(
-                future: FirebaseFirestore.instance.collection('Vendor').doc(vendorid).get(),
+                future: FirebaseFirestore.instance
+                    .collection('Vendor')
+                    .doc(vendorid)
+                    .get(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasError) {
@@ -177,15 +190,19 @@ class ProductDetail extends StatelessWidget {
                         child: Row(
                           children: [
                             ClipRRect(
-                            borderRadius: BorderRadius.circular(75), //150 bval tugs dugui bdg
-                            child: Image.network(
-                              vendorImageUrl,
-                              height: 100,
-                              width: 100,
-                              fit: BoxFit.cover,
+                              borderRadius: BorderRadius.circular(
+                                  75), //150 bval tugs dugui bdg
+                              child: Image.network(
+                                vendorImageUrl,
+                                height: 100,
+                                width: 100,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
-                            SizedBox(height: 8, width: 8,),
+                            SizedBox(
+                              height: 8,
+                              width: 8,
+                            ),
                             Text(
                               '${vendorData['Овог']} ${vendorData['Нэр']}\n${vendorData['Гэрийн хаяг']}',
                               style: TextStyle(
@@ -207,14 +224,27 @@ class ProductDetail extends StatelessWidget {
             SizedBox(height: 16.0),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: TextFormField(
-                controller: quantityController, // Assign controller to the TextFormField
-                decoration: InputDecoration(
-                  labelText: 'Тоо ширхэг (хэмжээ)',
-                  border: OutlineInputBorder(),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(10), // Add border radius here
+                  border: Border.all(
+                      color: Colors.black, width: 1), // Optionally, add border
                 ),
-                keyboardType: TextInputType.number,
-                // Implement logic to handle quantity input
+                child: TextFormField(
+                  controller: quantityController,
+                  decoration: InputDecoration(
+                    labelText: 'Тоо ширхэг (хэмжээ)',
+                    border:
+                        InputBorder.none, // Remove border from InputDecoration
+                    contentPadding: EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal:
+                            16), // Adjust content padding to match the container padding
+                  ),
+                  keyboardType: TextInputType.number,
+                  // Implement logic to handle quantity input
+                ),
               ),
             ),
             Padding(
@@ -228,12 +258,16 @@ class ProductDetail extends StatelessWidget {
                       'productName': productName,
                       'productImage': productImage,
                       'userID': _userId,
-                      'vendorID': vendorid, // Include vendorid in the order data
+                      'vendorID':
+                          vendorid, // Include vendorid in the order data
                       'quantity': quantity,
-                      'status': 'Pending', // Initially set order status to Pending
+                      'status':
+                          'Pending', // Initially set order status to Pending
                       // Add other relevant order details
                     };
-                    await FirebaseFirestore.instance.collection('Orders').add(orderData);
+                    await FirebaseFirestore.instance
+                        .collection('Orders')
+                        .add(orderData);
 
                     // Update product quantity
                     // await FirebaseFirestore.instance.collection('VendorProduct').doc(productID).update({
@@ -250,9 +284,12 @@ class ProductDetail extends StatelessWidget {
                   }
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.cyan),
-                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                  fixedSize: MaterialStateProperty.all<Size>(Size.fromHeight(50)),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.cyan),
+                  foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white),
+                  fixedSize:
+                      MaterialStateProperty.all<Size>(Size.fromHeight(50)),
                 ),
                 child: Text('Захиалах'),
               ),

@@ -12,7 +12,12 @@ class _UserAngilalState extends State<UserAngilal> {
   String _userId = '';
 
   String _selectedCategory = 'Бүгд';
-  List<String> _categories = ['Бүгд', 'Мах махан бүтээгдэхүүн', 'Сүүн бүтээгдэхүүн', 'Хувцас'];
+  List<String> _categories = [
+    'Бүгд',
+    'Мах махан бүтээгдэхүүн',
+    'Сүүн бүтээгдэхүүн',
+    'Хувцас'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +44,15 @@ class _UserAngilalState extends State<UserAngilal> {
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
               stream: _selectedCategory == 'Бүгд'
-                  ? FirebaseFirestore.instance.collection('VendorProduct').snapshots()
-                  : FirebaseFirestore.instance.collection('VendorProduct').where('Ангилал', isEqualTo: _selectedCategory).snapshots(),
-              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  ? FirebaseFirestore.instance
+                      .collection('VendorProduct')
+                      .snapshots()
+                  : FirebaseFirestore.instance
+                      .collection('VendorProduct')
+                      .where('Ангилал', isEqualTo: _selectedCategory)
+                      .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 }
@@ -53,19 +64,23 @@ class _UserAngilalState extends State<UserAngilal> {
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (BuildContext context, int index) {
                         DocumentSnapshot document = snapshot.data!.docs[index];
-                        Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                        Map<String, dynamic> data =
+                            document.data() as Map<String, dynamic>;
                         return Card(
-                          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                           elevation: 4,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
+                            side: BorderSide(color: Colors.black, width: 1),
                           ),
                           child: ListTile(
                             contentPadding: EdgeInsets.all(10),
                             leading: ClipRRect(
                               borderRadius: BorderRadius.circular(8.0),
                               child: Image.network(
-                                data['Бүтээгдэхүүний зураг'], // Assuming you have an 'imageUrl' field in your document
+                                data[
+                                    'Бүтээгдэхүүний зураг'], // Assuming you have an 'imageUrl' field in your document
                                 width: 80,
                                 height: 80,
                                 fit: BoxFit.cover,
@@ -83,7 +98,8 @@ class _UserAngilalState extends State<UserAngilal> {
                               children: [
                                 SizedBox(height: 5),
                                 Text(
-                                  data['Ангилал'], // Assuming 'category' is the category field
+                                  data[
+                                      'Ангилал'], // Assuming 'category' is the category field
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey[600],
@@ -95,12 +111,13 @@ class _UserAngilalState extends State<UserAngilal> {
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.green[700],
+                                    color: Colors.cyan,
                                   ),
                                 ),
                                 SizedBox(height: 3),
                                 Text(
-                                  data['Бэлэн болох'], // Assuming 'availability' is the availability field
+                                  data[
+                                      'Бэлэн болох'], // Assuming 'availability' is the availability field
                                   style: TextStyle(
                                     fontSize: 14,
                                   ),
@@ -123,6 +140,7 @@ class _UserAngilalState extends State<UserAngilal> {
       ),
     );
   }
+
   void _showAfterLoginDialog() {
     showDialog(
       context: context,

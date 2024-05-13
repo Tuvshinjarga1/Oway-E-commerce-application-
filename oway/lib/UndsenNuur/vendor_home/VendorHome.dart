@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:oway/UndsenNuur/vendor_home/add_product/VendorAddProduct.dart';
 import 'package:oway/UndsenNuur/vendor_home/vendorpro_pages/VendorProfile.dart';
 
@@ -66,22 +67,32 @@ class _VendorHomePageState extends State<VendorHomePage> {
                 fit: BoxFit.cover,
               ),
               SizedBox(height: 20),
-              Text("Тавтай морил $_userName"),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 10.0),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  "Тавтай морил $_userName",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.cyan,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  'Миний борлуулалт',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Text(
-                        'Миний борлуулалт',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
                     DataTable(
                       columns: [
                         DataColumn(label: Text('Борлуулалтын Төлөв')),
@@ -90,74 +101,89 @@ class _VendorHomePageState extends State<VendorHomePage> {
                       rows: [
                         DataRow(cells: [
                           DataCell(Text('Амжилттай борлуулсан')),
-                          DataCell(StreamBuilder(
-                            stream: FirebaseFirestore.instance.collection('AllowedOrders')
-                            .where('vendorID', isEqualTo: widget.userId)
-                            .snapshots(),
-                            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return CircularProgressIndicator();
-                              } else if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}');
-                              } else {
-                                // Process snapshot data and display statistics
-                                amjilttai = snapshot.data!.docs.length;
-                                return Column(
-                                  children: [
-                                    Text('${snapshot.data!.docs.length}'),
-                                    // Display other statistics similarly
-                                  ],
-                                );
-                              }
-                            },
-                          ),),
+                          DataCell(
+                            StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection('AllowedOrders')
+                                  .where('vendorID', isEqualTo: widget.userId)
+                                  .snapshots(),
+                              builder: (context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  // Process snapshot data and display statistics
+                                  amjilttai = snapshot.data!.docs.length;
+                                  return Column(
+                                    children: [
+                                      Text('${snapshot.data!.docs.length}'),
+                                      // Display other statistics similarly
+                                    ],
+                                  );
+                                }
+                              },
+                            ),
+                          ),
                         ]),
                         DataRow(cells: [
                           DataCell(Text('Цуцлагдсан')),
-                          DataCell(StreamBuilder(
-                            stream: FirebaseFirestore.instance.collection('CancelledOrders')
-                            .where('vendorID', isEqualTo: widget.userId)
-                            .snapshots(),
-                            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return CircularProgressIndicator();
-                              } else if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}');
-                              } else {
-                                tsutslagdsan = snapshot.data!.docs.length;
-                                return Column(
-                                  children: [
-                                    Text('${snapshot.data!.docs.length}'),
-                                    // Display other statistics similarly
-                                  ],
-                                );
-                              }
-                            },
-                          ),),
+                          DataCell(
+                            StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection('CancelledOrders')
+                                  .where('vendorID', isEqualTo: widget.userId)
+                                  .snapshots(),
+                              builder: (context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  tsutslagdsan = snapshot.data!.docs.length;
+                                  return Column(
+                                    children: [
+                                      Text('${snapshot.data!.docs.length}'),
+                                      // Display other statistics similarly
+                                    ],
+                                  );
+                                }
+                              },
+                            ),
+                          ),
                         ]),
                         DataRow(cells: [
                           DataCell(Text('Хүлээгдэж байгаа')),
-                          DataCell(StreamBuilder(
-                            stream: FirebaseFirestore.instance.collection('Orders')
-                                .where('vendorID', isEqualTo: widget.userId)
-                                .where('status', isEqualTo: 'Pending')
-                                .snapshots(),
-                            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return CircularProgressIndicator();
-                              } else if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}');
-                              } else {
-                                huleegdej = snapshot.data!.docs.length;
-                                return Column(
-                                  children: [
-                                    Text('${snapshot.data!.docs.length}'),
-                                    // Display other statistics similarly
-                                  ],
-                                );
-                              }
-                            },
-                          ),),
+                          DataCell(
+                            StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection('Orders')
+                                  .where('vendorID', isEqualTo: widget.userId)
+                                  .where('status', isEqualTo: 'Pending')
+                                  .snapshots(),
+                              builder: (context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  huleegdej = snapshot.data!.docs.length;
+                                  return Column(
+                                    children: [
+                                      Text('${snapshot.data!.docs.length}'),
+                                      // Display other statistics similarly
+                                    ],
+                                  );
+                                }
+                              },
+                            ),
+                          ),
                         ]),
                       ],
                     ),
@@ -191,13 +217,17 @@ class _VendorHomePageState extends State<VendorHomePage> {
                 // Navigate to VendorAddProduct page
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => VendorAddProduct(userId: widget.userId)),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          VendorAddProduct(userId: widget.userId)),
                 );
               } else if (index == 2) {
                 // Navigate to VendorProfile page
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => VendorProfile(userId: widget.userId)),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          VendorProfile(userId: widget.userId)),
                 );
               }
             });

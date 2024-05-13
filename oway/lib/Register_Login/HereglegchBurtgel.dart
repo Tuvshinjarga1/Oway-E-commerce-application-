@@ -183,6 +183,7 @@ class _BurtgelState extends State<Burtgel> {
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: "Нууц үгээ давтан оруулна уу.",
+                    prefixIcon: Icon(Icons.lock),
                     border: InputBorder.none, // Remove the default border
                     contentPadding: EdgeInsets.symmetric(
                         horizontal: 16.0,

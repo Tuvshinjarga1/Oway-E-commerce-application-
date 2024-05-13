@@ -82,13 +82,44 @@ class _LoginState extends State<Login> {
                     child: Text(
                       "Нэвтрэх",
                       style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 26,
                           color: Colors.cyan,
                           fontWeight: FontWeight.bold),
                     ),
                   ),
                   SizedBox(
-                    height: 100,
+                    height: 50,
+                  ),
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Radio(
+                          value: 1,
+                          groupValue: selectedOption,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedOption = value as int;
+                            });
+                          },
+                        ),
+                        Text('Хэрэглэгч'),
+                        SizedBox(width: 20),
+                        Radio(
+                          value: 2,
+                          groupValue: selectedOption,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedOption = value as int;
+                            });
+                          },
+                        ),
+                        Text('Нийлүүлэгч'),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                   Container(
                     decoration: BoxDecoration(
@@ -138,73 +169,52 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Radio(
-                          value: 1,
-                          groupValue: selectedOption,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedOption = value as int;
-                            });
-                          },
-                        ),
-                        Text('Хэрэглэгч'),
-                        SizedBox(width: 20),
-                        Radio(
-                          value: 2,
-                          groupValue: selectedOption,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedOption = value as int;
-                            });
-                          },
-                        ),
-                        Text('Нийлүүлэгч'),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      if (selectedOption == 1) {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Burtgel()));
-                        print("USER SHUU");
-                      } else {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => NiiluulegchRegister()));
-                        print("VENDOR SHUU");
-                      }
-                    },
-                    style: ButtonStyle(
-                      alignment: Alignment.centerRight,
-                      foregroundColor:
-                          MaterialStateProperty.all<Color>(Colors.blue),
-                      textStyle: MaterialStateProperty.all<TextStyle>(
-                          TextStyle(fontSize: 18)),
-                      overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                        (Set<MaterialState> states) {
-                          if (states.contains(MaterialState.hovered)) {
-                            return Colors.transparent;
+                  // SizedBox(
+                  //   height: 10,
+                  // ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          if (selectedOption == 1) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Burtgel()));
+                            print("USER SHUU");
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        NiiluulegchRegister()));
+                            print("VENDOR SHUU");
                           }
-                          return null;
                         },
+                        style: ButtonStyle(
+                          foregroundColor:
+                              MaterialStateProperty.all<Color>(Colors.blue),
+                          textStyle: MaterialStateProperty.all<TextStyle>(
+                            TextStyle(fontSize: 18),
+                          ),
+                          overlayColor:
+                              MaterialStateProperty.resolveWith<Color?>(
+                            (Set<MaterialState> states) {
+                              if (states.contains(MaterialState.hovered)) {
+                                return Colors.transparent;
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        child: Text("Бүртгүүлэх"),
                       ),
-                    ),
-                    child: Text("Бүртгүүлэх"),
+                    ],
                   ),
+
                   SizedBox(
-                    height: 30,
+                    height: 20,
                   ),
                   ElevatedButton(
                     child: Text(

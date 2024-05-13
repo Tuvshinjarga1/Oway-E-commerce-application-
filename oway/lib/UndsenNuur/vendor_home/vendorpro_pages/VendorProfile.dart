@@ -55,7 +55,7 @@ class _VendorProfilePageState extends State<VendorProfile> {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            //crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,7 +66,8 @@ class _VendorProfilePageState extends State<VendorProfile> {
                   //   width: 155,
                   // ),
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(75), //150 bval tugs dugui bdg
+                    borderRadius:
+                        BorderRadius.circular(75), //150 bval tugs dugui bdg
                     child: Image.network(
                       '$_imageLink',
                       height: 100,
@@ -81,7 +82,8 @@ class _VendorProfilePageState extends State<VendorProfile> {
                       SizedBox(height: 50),
                       Text(
                         "$_vendorOvog $_vendorNer",
-                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 10),
                       Text(
@@ -96,9 +98,10 @@ class _VendorProfilePageState extends State<VendorProfile> {
               GestureDetector(
                 onTap: () {
                   Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => VendorInfo(userId: _userId)),
-                );
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => VendorInfo(userId: _userId)),
+                  );
                   print("Profile button tapped");
                 },
                 child: Row(
@@ -113,9 +116,10 @@ class _VendorProfilePageState extends State<VendorProfile> {
               GestureDetector(
                 onTap: () {
                   Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => VendorProduct(vendorId: _userId)),
-                );
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => VendorProduct(vendorId: _userId)),
+                  );
                   print("Products button tapped");
                 },
                 child: Row(
@@ -130,9 +134,10 @@ class _VendorProfilePageState extends State<VendorProfile> {
               GestureDetector(
                 onTap: () {
                   Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => VendorOrder(vendorId: _userId)),
-                );
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => VendorOrder(vendorId: _userId)),
+                  );
                   print("Orders button tapped");
                 },
                 child: Row(

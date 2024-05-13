@@ -63,43 +63,51 @@ class _NiiluulegchPageState extends State<Niiluulegch> {
                   SizedBox(height: 20),
                   Container(
                     width: 400, // Set desired width
-                    height: 250, // Set desired height
+                    height: 200, // Set desired height
                     child: Card(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 10),
-                          Text(
-                            'Овог: ${_userData["Овог"]}',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Нэр: ${_userData["Нэр"]}',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Эрхэлдэг ажил: ${_userData["Эрхэлдэг ажил"]}',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Утас: ${_userData["Утас"]}',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Гэрийн хаяг: ${_userData["Гэрийн хаяг"]}',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Дэлгэрэнгүй: ${_userData["Дэлгэрэнгүй"]}',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          SizedBox(height: 10),
-                        ],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        side: BorderSide(color: Colors.black, width: 1),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            left: 20), // Adjust the left padding as needed
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 10),
+                            Text(
+                              'Овог: ${_userData["Овог"]}',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Нэр: ${_userData["Нэр"]}',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Эрхэлдэг ажил: ${_userData["Эрхэлдэг ажил"]}',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Утас: ${_userData["Утас"]}',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Гэрийн хаяг: ${_userData["Гэрийн хаяг"]}',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Дэлгэрэнгүй: ${_userData["Дэлгэрэнгүй"]}',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            SizedBox(height: 10),
+                          ],
+                        ),
                       ),
                     ),
                   ),

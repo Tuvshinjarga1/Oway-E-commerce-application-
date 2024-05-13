@@ -17,7 +17,25 @@ class UserHome extends StatefulWidget {
 class _UserHomeState extends State<UserHome> {
   int _selectedIndex = 0;
   bool _isLoggedIn = false;
-  String _userId = '';
+  String _userId = "";
+  String _userNer = "";
+
+  @override
+  void initState() {
+    super.initState();
+    print("pls orood ireech UserID: ${widget.userId}");
+    // Fetch user data when the ProfilePage is initialized
+    getUserData(widget.userId);
+  }
+
+  Future<void> getUserData(String userId) async {
+    DocumentSnapshot userSnapshot =
+        await FirebaseFirestore.instance.collection('User').doc(userId).get();
+    setState(() {
+      _userId = userSnapshot['id'];
+      _userNer = userSnapshot['Нэр'];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +70,17 @@ class _UserHomeState extends State<UserHome> {
                 'assets/ehleh.png',
                 fit: BoxFit.cover,
               ),
-              Text("User ID: $_userId"),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  "Сайн уу? $_userNer, тавтай морил",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
               SizedBox(height: 20),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -109,7 +137,7 @@ class _UserHomeState extends State<UserHome> {
                                     color: Colors.white,
                                     boxShadow: [
                                       BoxShadow(
-                                          color: Colors.blue, blurRadius: 5.0)
+                                          color: Colors.grey, blurRadius: 5.0)
                                     ], // Wrap in a list
                                   ),
                                   child: Column(
@@ -247,7 +275,7 @@ class _UserHomeState extends State<UserHome> {
                                         style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.green[700],
+                                          color: Colors.blue,
                                         ),
                                       ),
                                       SizedBox(height: 3),

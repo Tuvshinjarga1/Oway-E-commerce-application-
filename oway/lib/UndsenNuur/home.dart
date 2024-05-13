@@ -18,6 +18,15 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   bool _isLoggedIn = false;
   String _userId = '';
+  String _userName = "";
+
+  Future<void> getUserData(String userId) async {
+    DocumentSnapshot userSnapshot =
+        await FirebaseFirestore.instance.collection('User').doc(userId).get();
+    setState(() {
+      _userName = userSnapshot['Нэр'];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +34,7 @@ class _HomePageState extends State<HomePage> {
     return MaterialApp(
       title: '',
       theme: ThemeData(
+        //backgroundColor: Colors.white,
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
@@ -52,12 +62,21 @@ class _HomePageState extends State<HomePage> {
                 'assets/ehleh.png',
                 fit: BoxFit.cover,
               ),
-              Text("User ID: $_userId"),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  "Тавтай морил $_userName",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
               SizedBox(height: 20),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  'Featured Products',
+                  'Онцлох бүтээгдэхүүн',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -66,8 +85,12 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 10),
               StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection('VendorProduct').where('Онцлох', isEqualTo: true).snapshots(),
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                stream: FirebaseFirestore.instance
+                    .collection('VendorProduct')
+                    .where('Онцлох', isEqualTo: true)
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   }
@@ -79,8 +102,10 @@ class _HomePageState extends State<HomePage> {
                         height: 200,
                         child: ListView(
                           scrollDirection: Axis.horizontal,
-                          children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                            Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                          children: snapshot.data!.docs
+                              .map((DocumentSnapshot document) {
+                            Map<String, dynamic> data =
+                                document.data() as Map<String, dynamic>;
                             return GestureDetector(
                               onTap: () {
                                 _showAfterLoginDialog(); // Show dialog on tap
@@ -91,7 +116,11 @@ class _HomePageState extends State<HomePage> {
                                   width: 150,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: Colors.grey[200],
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey, blurRadius: 5.0)
+                                    ], // Wrap in a list
                                   ),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -101,9 +130,11 @@ class _HomePageState extends State<HomePage> {
                                         width: 100,
                                         height: 100,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                           image: DecorationImage(
-                                            image: NetworkImage(data['Бүтээгдэхүүний зураг']), // Assuming 'imageUrl' is the field storing image URLs
+                                            image: NetworkImage(data[
+                                                'Бүтээгдэхүүний зураг']), // Assuming 'imageUrl' is the field storing image URLs
                                             fit: BoxFit.cover,
                                           ),
                                         ),
@@ -111,7 +142,8 @@ class _HomePageState extends State<HomePage> {
                                       SizedBox(height: 8),
                                       // Display product name
                                       Text(
-                                        data['Нэр'], // Assuming 'Нэр' is the name field
+                                        data[
+                                            'Нэр'], // Assuming 'Нэр' is the name field
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontSize: 16,
@@ -129,12 +161,11 @@ class _HomePageState extends State<HomePage> {
                   }
                 },
               ),
-
               SizedBox(height: 20),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  'Products',
+                  'Бүтээгдэхүүн',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -143,8 +174,11 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 10),
               StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection('VendorProduct').snapshots(),
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                stream: FirebaseFirestore.instance
+                    .collection('VendorProduct')
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   }
@@ -156,31 +190,39 @@ class _HomePageState extends State<HomePage> {
                         shrinkWrap: true,
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (BuildContext context, int index) {
-                          DocumentSnapshot document = snapshot.data!.docs[index];
-                          Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                          DocumentSnapshot document =
+                              snapshot.data!.docs[index];
+                          Map<String, dynamic> data =
+                              document.data() as Map<String, dynamic>;
                           return GestureDetector(
                             onTap: () {
                               _showAfterLoginDialog(); // Show dialog on tap
                             },
                             child: Card(
-                              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
                               elevation: 4,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15.0),
+                                side: BorderSide(color: Colors.black, width: 1),
                               ),
+                              color: Colors.white, // Set white background color
+                              shadowColor: Colors.grey,
                               child: ListTile(
                                 contentPadding: EdgeInsets.all(10),
                                 leading: ClipRRect(
                                   borderRadius: BorderRadius.circular(8.0),
                                   child: Image.network(
-                                    data['Бүтээгдэхүүний зураг'], // Assuming you have an 'imageUrl' field in your document
+                                    data[
+                                        'Бүтээгдэхүүний зураг'], // Assuming you have an 'imageUrl' field in your document
                                     width: 80,
                                     height: 80,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
                                 title: Text(
-                                  data['Нэр'], // Assuming 'Нэр' is the name field
+                                  data[
+                                      'Нэр'], // Assuming 'Нэр' is the name field
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18,
@@ -191,7 +233,8 @@ class _HomePageState extends State<HomePage> {
                                   children: [
                                     SizedBox(height: 5),
                                     Text(
-                                      data['Ангилал'], // Assuming 'category' is the category field
+                                      data[
+                                          'Ангилал'], // Assuming 'category' is the category field
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.grey[600],
@@ -203,12 +246,13 @@ class _HomePageState extends State<HomePage> {
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.green[700],
+                                        color: Colors.cyan,
                                       ),
                                     ),
                                     SizedBox(height: 3),
                                     Text(
-                                      data['Бэлэн болох'], // Assuming 'availability' is the availability field
+                                      data[
+                                          'Бэлэн болох'], // Assuming 'availability' is the availability field
                                       style: TextStyle(
                                         fontSize: 14,
                                       ),
@@ -250,18 +294,22 @@ class _HomePageState extends State<HomePage> {
               if (index == 1) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Angilal()), // Navigate to CategoryPage
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          Angilal()), // Navigate to CategoryPage
                 );
               } else if (_isLoggedIn && index == 0) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => UserHome(userId: _userId)),
+                  MaterialPageRoute(
+                      builder: (context) => UserHome(userId: _userId)),
                 );
               } else if (index == 2) {
                 if (_isLoggedIn) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ProfilePage(userId: _userId)),
+                    MaterialPageRoute(
+                        builder: (context) => ProfilePage(userId: _userId)),
                   );
                 } else {
                   Navigator.push(
@@ -279,25 +327,31 @@ class _HomePageState extends State<HomePage> {
 
   // Function to show a dialog after login
   void _showAfterLoginDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Нэвтэрсний дараа үйлдэл хийнэ үү"),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text("OK"),
-            ),
-          ],
-        );
-      },
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),
     );
+    // showDialog(
+    //   context: context,
+    //   builder: (BuildContext context) {
+    //     return AlertDialog(
+    //       title: Text("Нэвтэрсний дараа үйлдэл хийнэ үү"),
+    //       actions: <Widget>[
+    //         TextButton(
+    //           onPressed: () {
+    //             Navigator.of(context).pop();
+    //           },
+    //           child: Text("OK"),
+    //         ),
+    //       ],
+    //     );
+    //   },
+    // );
   }
 }
 
 void main() {
-  runApp(HomePage(userId: '',));
+  runApp(HomePage(
+    userId: '',
+  ));
 }

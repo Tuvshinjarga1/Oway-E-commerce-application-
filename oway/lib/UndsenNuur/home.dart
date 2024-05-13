@@ -69,6 +69,7 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
+                    color: Colors.blue,
                   ),
                 ),
               ),
@@ -246,7 +247,7 @@ class _HomePageState extends State<HomePage> {
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.cyan,
+                                        color: Colors.blue,
                                       ),
                                     ),
                                     SizedBox(height: 3),

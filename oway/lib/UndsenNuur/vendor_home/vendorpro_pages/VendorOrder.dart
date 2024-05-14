@@ -14,92 +14,104 @@ class VendorOrder extends StatelessWidget {
       appBar: AppBar(
         title: Text('Захиалгууд'),
       ),
-      body: Expanded(
-        child: FutureBuilder(
-          future: FirebaseFirestore.instance
-              .collection('Orders')
-              .where('vendorID', isEqualTo: vendorId)
-              .get(),
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (snapshot.hasError) {
-              return Center(
-                child: Text('Error: ${snapshot.error}'),
-              );
-            }
-            if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
-              return Center(
-                child: Text('No orders found for this vendor.'),
-              );
-            }
-            return ListView(
-              children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                Map<String, dynamic> orderData = document.data() as Map<String, dynamic>;
+      body: FutureBuilder(
+        future: FirebaseFirestore.instance
+            .collection('Orders')
+            .where('vendorID', isEqualTo: vendorId)
+            .get(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          }
+          if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
+            return Center(
+              child: Text('No orders found for this vendor.'),
+            );
+          }
+          return ListView(
+            children: snapshot.data!.docs.map((DocumentSnapshot document) {
+              Map<String, dynamic> orderData = document.data() as Map<String, dynamic>;
 
-                Color borderColor;
-                switch (orderData['status']) {
-                  case 'Allowed':
-                    borderColor = Colors.green;
-                    break;
-                  case 'Cancelled':
-                    borderColor = Colors.red;
-                    break;
-                  default:
-                    borderColor = Colors.yellow;
-                    break;
-                }
+              Color borderColor;
+              switch (orderData['status']) {
+                case 'Allowed':
+                  borderColor = Colors.green;
+                  break;
+                case 'Cancelled':
+                  borderColor = Colors.red;
+                  break;
+                default:
+                  borderColor = Colors.yellow;
+                  break;
+              }
 
-                return Card(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: borderColor),
+              return Card(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: borderColor),
+                  ),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(orderData['productImage']),
                     ),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(orderData['productImage']),
-                      ),
-                      title: Text('Order ID: ${document.id}'),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Бүтээгдэхүүний нэр: ${orderData['productName']}'),
-                          Text('Quantity: ${orderData['quantity']}'),
-                          Text('Status: ${orderData['status']}')
-                        ],
-                      ),
-                      trailing: Column(
+                    title: Text('Order ID: ${document.id}'),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Бүтээгдэхүүний нэр: ${orderData['productName']}'),
+                        Text('Quantity: ${orderData['quantity']}'),
+                        Text('Status: ${orderData['status']}')
+                      ],
+                    ),
+                    trailing: orderData['status'] != 'Allowed' 
+                      ? Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           ElevatedButton(
                             onPressed: () async {
-                              // Update order status to "Allowed"
-                              await FirebaseFirestore.instance
-                                  .collection('Orders')
-                                  .doc(document.id)
-                                  .update({'status': 'Allowed'});
+                              try {
+                                // Update order status to "Allowed"
+                                await FirebaseFirestore.instance
+                                    .collection('Orders')
+                                    .doc(document.id)
+                                    .update({'status': 'Allowed'});
 
-                              // Decrement product quantity in the vendor's inventory
-                              await FirebaseFirestore.instance
-                                  .collection('VendorProduct')
-                                  .doc(orderData['productID'])
-                                  .update({
-                                'Тоо ширхэг': FieldValue.increment(-orderData['quantity']),
-                              });
+                                // Decrement product quantity in the vendor's inventory
+                                await FirebaseFirestore.instance
+                                    .collection('VendorProduct')
+                                    .doc(orderData['productID'])
+                                    .update({
+                                  'Тоо ширхэг': FieldValue.increment(-orderData['quantity']),
+                                });
 
-                              // Save the order to "AllowedOrders" collection
-                              await FirebaseFirestore.instance
-                                  .collection('AllowedOrders')
-                                  .doc(document.id) // Use the same document id
-                                  .set(orderData); // Save the order data
+                                // Copy orderData and update status to "Allowed"
+                                Map<String, dynamic> allowedOrderData = Map<String, dynamic>.from(orderData);
+                                allowedOrderData['status'] = 'Allowed';
 
-                              // Show a snackbar indicating that the order has been allowed and quantity updated
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Бүтээгдэхүүн амжилттай баталгаажлаа.')),
-                              );
+                                // Save the updated order to "AllowedOrders" collection
+                                await FirebaseFirestore.instance
+                                    .collection('AllowedOrders')
+                                    .doc(document.id) // Use the same document id
+                                    .set(allowedOrderData); // Save the updated order data
+
+                                // Show a snackbar indicating that the order has been allowed and quantity updated
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Бүтээгдэхүүн амжилттай баталгаажлаа.')),
+                                );
+                              } catch (e) {
+                                // Handle any errors here
+                                print('Error: $e');
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Алдаа гарлаа, дахин оролдоно уу.')),
+                                );
+                              }
                             },
                             style: ButtonStyle(
                               minimumSize: MaterialStateProperty.all(Size(0, 30)),
@@ -135,18 +147,18 @@ class VendorOrder extends StatelessWidget {
                             child: Text('Cancel'),
                           ),
                         ],
-                      ),
-                      onTap: () {
-                        // Handle order selection
-                        // For example, navigate to a detailed order page
-                      },
-                    ),
+                      )
+                      : null,
+                    onTap: () {
+                      // Handle order selection
+                      // For example, navigate to a detailed order page
+                    },
                   ),
-                );
-              }).toList(),
-            );
-          },
-        ),
+                ),
+              );
+            }).toList(),
+          );
+        },
       ),
     );
   }

@@ -212,7 +212,7 @@ class _VendorAddProductState extends State<VendorAddProduct> {
                         .all(), // You can customize border color and width here
                   ),
                   child: TextFormField(
-                    controller: une,
+                    controller: nemelt_tailbar,
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
                       labelText: "Нэмэлт тайлбар",
@@ -267,7 +267,7 @@ class _VendorAddProductState extends State<VendorAddProduct> {
                         .all(), // You can customize border color and width here
                   ),
                   child: TextFormField(
-                    controller: une,
+                    controller: hugatsaa,
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
                       labelText: "Бэлэн болох хугацаа",
@@ -288,7 +288,7 @@ class _VendorAddProductState extends State<VendorAddProduct> {
                         .all(), // You can customize border color and width here
                   ),
                   child: TextFormField(
-                    controller: une,
+                    controller: too_shirheg,
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
                       labelText: "Тоо ширхэг",

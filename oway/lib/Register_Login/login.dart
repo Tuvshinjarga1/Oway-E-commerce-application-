@@ -76,6 +76,9 @@ class _LoginState extends State<Login> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(
+                    height: 130,
+                  ),
                   Align(
                     alignment: Alignment.center,
                     child: Text(
@@ -87,7 +90,7 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   SizedBox(
-                    height: 50,
+                    height: 20,
                   ),
                   // Center(
                   //   child: Row(
@@ -190,11 +193,8 @@ class _LoginState extends State<Login> {
                           //               NiiluulegchRegister()));
                           //   print("VENDOR SHUU");
                           // }
-                          Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        Ouei()));
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Ouei()));
                         },
                         style: ButtonStyle(
                           foregroundColor:
@@ -239,27 +239,6 @@ class _LoginState extends State<Login> {
                   ),
                   SizedBox(
                     height: 20,
-                  ),
-                  ElevatedButton(
-                    child: Text(
-                      "Буцах",
-                      style: TextStyle(fontSize: 21),
-                    ),
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.cyan),
-                      foregroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
-                      fixedSize:
-                          MaterialStateProperty.all<Size>(Size.fromHeight(50)),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        HomePage(userId: '',)));
-                    },
                   ),
                 ],
               ),

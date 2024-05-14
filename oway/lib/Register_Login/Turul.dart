@@ -24,16 +24,22 @@ class Ouei extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Text(
                   "Төрлөө сонгоно уу",
-                  style: TextStyle(fontSize: 22, color: Colors.cyan),
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue),
                 ),
               ),
-              SizedBox(height: 30),
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "Өөрт тохирох төрлөө сонгосноор зөвхөн танд зориулсан үйлчилгээг авах болно",
-                  style: TextStyle(fontSize: 18),
-                  textAlign: TextAlign.center,
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Өөрт тохирох төрлөө сонгосноор зөвхөн танд зориулсан үйлчилгээг авах болно",
+                    style: TextStyle(fontSize: 18),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
               SizedBox(height: 30),
@@ -42,20 +48,21 @@ class Ouei extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Burtgel()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Burtgel()));
                       print("Захиалагч card tapped");
                     },
                     child: Card(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Icon(
-                            Icons.account_box,
-                            size: 40.0,
-                            color: Colors.black,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Icon(
+                              Icons.account_box,
+                              size: 40.0,
+                              color: Colors.black,
+                            ),
                           ),
                           SizedBox(width: 150, height: 50),
                           Column(
@@ -68,23 +75,26 @@ class Ouei extends StatelessWidget {
                       ),
                     ),
                   ),
+                  SizedBox(width: 20),
                   InkWell(
                     onTap: () {
                       Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        NiiluulegchRegister()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => NiiluulegchRegister()));
                       print("Өрхийн үйлдвэрлэл эрхлэгч иргэн card tapped");
                     },
                     child: Card(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Icon(
-                            Icons.badge,
-                            size: 40.0,
-                            color: Colors.black,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Icon(
+                              Icons.badge,
+                              size: 40.0,
+                              color: Colors.black,
+                            ),
                           ),
                           SizedBox(width: 150, height: 30),
                           Column(

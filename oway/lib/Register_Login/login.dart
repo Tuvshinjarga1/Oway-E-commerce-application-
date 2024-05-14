@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:oway/Register_Login/HereglegchBurtgel.dart';
 import 'package:oway/Register_Login/Turul.dart';
-import 'package:oway/Register_Login/VendorRegister/VendorReg.dart';
 import 'package:oway/UndsenNuur/home.dart';
 import 'package:oway/UndsenNuur/user_home/UserHome.dart';
 import 'package:oway/UndsenNuur/vendor_home/VendorHome.dart';

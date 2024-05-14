@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:oway/Register_Login/HereglegchBurtgel.dart';
+import 'package:oway/Register_Login/Turul.dart';
 import 'package:oway/Register_Login/VendorRegister/VendorReg.dart';
+import 'package:oway/UndsenNuur/home.dart';
 import 'package:oway/UndsenNuur/user_home/UserHome.dart';
 import 'package:oway/UndsenNuur/vendor_home/VendorHome.dart';
 
@@ -90,34 +92,34 @@ class _LoginState extends State<Login> {
                   SizedBox(
                     height: 50,
                   ),
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Radio(
-                          value: 1,
-                          groupValue: selectedOption,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedOption = value as int;
-                            });
-                          },
-                        ),
-                        Text('Хэрэглэгч'),
-                        SizedBox(width: 20),
-                        Radio(
-                          value: 2,
-                          groupValue: selectedOption,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedOption = value as int;
-                            });
-                          },
-                        ),
-                        Text('Нийлүүлэгч'),
-                      ],
-                    ),
-                  ),
+                  // Center(
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: [
+                  //       Radio(
+                  //         value: 1,
+                  //         groupValue: selectedOption,
+                  //         onChanged: (value) {
+                  //           setState(() {
+                  //             selectedOption = value as int;
+                  //           });
+                  //         },
+                  //       ),
+                  //       Text('Хэрэглэгч'),
+                  //       SizedBox(width: 20),
+                  //       Radio(
+                  //         value: 2,
+                  //         groupValue: selectedOption,
+                  //         onChanged: (value) {
+                  //           setState(() {
+                  //             selectedOption = value as int;
+                  //           });
+                  //         },
+                  //       ),
+                  //       Text('Нийлүүлэгч'),
+                  //     ],
+                  //   ),
+                  // ),
                   SizedBox(
                     height: 20,
                   ),
@@ -177,20 +179,25 @@ class _LoginState extends State<Login> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          if (selectedOption == 1) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Burtgel()));
-                            print("USER SHUU");
-                          } else {
-                            Navigator.push(
+                          // if (selectedOption == 1) {
+                          //   Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //           builder: (context) => Burtgel()));
+                          //   print("USER SHUU");
+                          // } else {
+                          //   Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //           builder: (context) =>
+                          //               NiiluulegchRegister()));
+                          //   print("VENDOR SHUU");
+                          // }
+                          Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        NiiluulegchRegister()));
-                            print("VENDOR SHUU");
-                          }
+                                        Ouei()));
                         },
                         style: ButtonStyle(
                           foregroundColor:
@@ -231,6 +238,30 @@ class _LoginState extends State<Login> {
                     ),
                     onPressed: () {
                       _signInWithEmailAndPassword();
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    child: Text(
+                      "Буцах",
+                      style: TextStyle(fontSize: 21),
+                    ),
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.cyan),
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      fixedSize:
+                          MaterialStateProperty.all<Size>(Size.fromHeight(50)),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        HomePage(userId: '',)));
                     },
                   ),
                 ],

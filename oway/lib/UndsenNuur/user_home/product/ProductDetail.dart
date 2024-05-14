@@ -76,7 +76,7 @@ class ProductDetail extends StatelessWidget {
                                   width:
                                       8), // Adding space between name and price
                               Text(
-                                productPrice,
+                                productPrice + " ₮",
                                 style: TextStyle(
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.bold,
